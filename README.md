@@ -7,18 +7,13 @@
 
 <!-- badges: end -->
 
-The goal of butteR is to …
+The goal of butteR is to help in the analysis and visualization of
+survey data
 
 ## Installation
 
-You can install the released version of butteR from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("butteR")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -27,7 +22,9 @@ devtools::install_github("zackarno/butteR")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+One of the most useful functions is the “mean\_prop\_table” functions
+which aids in batching aggregations (calculating means and proportions
+from weighted data)
 
 ``` r
 library(butteR)
