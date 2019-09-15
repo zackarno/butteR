@@ -38,6 +38,8 @@ questionnaire_factorize_categorical<-function(data, questionnaire,return_full_da
     return(categorical_data_factored)}
   if(return_full_data==TRUE){
     data[,colnames(categorical_data_factored)]<-categorical_data_factored
+    data<-data %>%
+      mutate_if(sapply(data, is.character),as.factor)
     return(data)
   }
 

@@ -66,7 +66,7 @@ mean_proportion_table<-function(design,
 
     if(class(design_srvy$variables[[variable_to_analyze]])=="factor"){
       if(na_replace==TRUE){
-        design_srvy$variables[[variable_to_analyze]]<-forcats::fct_explicit_na(design_srvy$variables[[variable_to_analyze]], "filtered_values")
+        design_srvy$variables[[variable_to_analyze]]<-forcats::fct_explicit_na(HH_svy_full$variables[,variable_to_analyze], "filtered_values")
       }
       if(is.null(aggregation_level)){
         aggregate_by<-syms(variable_to_analyze)
@@ -142,12 +142,25 @@ mean_proportion_table<-function(design,
         filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
     }
   }}
-
   if (is.null(aggregation_level)) {
+    if(length(factor_analysis_tables)>0 &length(integer_analysis_tables)>0 ){
     combined_output<-cbind(factors_analyzed_wide, integers_analyzed_wide)}
-  else{
-    combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}
+    if(length(factor_analysis_tables)>0 & length(integer_analysis_tables)==0) {
+      factors_analyzed_wide
+    }
+    if(length(factor_analysis_tables)==0 &length(integer_analysis_tables)>0) {
+      integers_analyzed_wide
+    }
 
+  } else{
+    if(length(factor_analysis_tables)>0 &length(integer_analysis_tables)>0 ){
+      combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}
+
+    if(length(factor_analysis_tables)>0 & length(integer_analysis_tables)==0)  {
+      return(factors_analyzed_wide)
+    }
+    if(length(factor_analysis_tables)==0 & length(integer_analysis_tables)>0){
+      integers_analyzed_wide
+  }
+  }
 }
-
-
