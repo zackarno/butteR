@@ -25,6 +25,7 @@ mean_proportion_table<-function(design,
   design_srvy<-as_survey(design)
   integer_analysis_tables<-list()
   factor_analysis_tables<-list()
+  list_of_variables<-setdiff(list_of_variables,aggregation_level)
 
   for(i in 1: length(list_of_variables)){
     variable_to_analyze<-list_of_variables[i]
