@@ -3,12 +3,10 @@
 #'
 #' returns the input data frame with concatenated select multiple questions
 #' removed
-#'
+#' @details
 #' @param data the dataset (data frame). Does not yet support design objects
 #' @param questionnaire questionnaire object created by the koboquest package
-#' @details
 #' @export
-#'
 #'
 
 remove_concat_select_multiple<-function(data, questionnaire){
@@ -19,5 +17,4 @@ remove_concat_select_multiple<-function(data, questionnaire){
     data<-data[,-which_are_select_multiple]
   }
   data
-
 }

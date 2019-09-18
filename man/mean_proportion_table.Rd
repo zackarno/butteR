@@ -33,7 +33,7 @@ mean_proportion_table(design, list_of_variables,
 
 \item{round_to}{The number of digits to round reults to.}
 
-\item{return_confidence}{Logical variable. TRUE (default) will return 95 % confidence interval, FALSE returns no confidence interval}
+\item{return_confidence}{Logical variable. TRUE (default) will return 95 \% confidence interval, FALSE returns no confidence interval}
 
 \item{na_replace}{Logical variable. TRUE will replace NA with 0 for integerss and "filtered value" for categorical variables. FALSE (default) will leave NAs in dataset and thus they will automatically be removed during calculation}
 }

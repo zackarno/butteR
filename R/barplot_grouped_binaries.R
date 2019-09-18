@@ -2,14 +2,11 @@
 #' BARPLOT GROUPED BINARY COLUMNS
 #'
 #' This function takes a list of variables from a survey object and puts them all on one barplot.
-#'
+#' @details
 #' @param design design object
 #' @param list_of_variables list of variables that you want to plot together
 #' @param aggregation_level the level to aggregate calculations to (this will ultimately be categorical on the Y-Axis)
-#' @details
 #' @export
-
-
 
 barplot_grouped_binaries <- function(design,list_of_variables,aggregation_level) {
   design_srvy<-srvyr::as_survey(design)
