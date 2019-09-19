@@ -133,10 +133,16 @@ mean_proportion_table<-function(design,
           filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
       }
     }}
-  if (is.null(aggregation_level)) {
-    combined_output<-cbind(factors_analyzed_wide, integers_analyzed_wide)}
-  else{
-    combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}
+  if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)>0){
+    if (is.null(aggregation_level)) {
+      combined_output<-cbind(factors_analyzed_wide, integers_analyzed_wide)}
+    else{
+      combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}}
+  if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)==0){
+    combined_output<-integers_analyzed_wide}
+  if(length(integer_analysis_tables)==0 &length(factor_analysis_tables)>0){
+    combined_output<-factor_analysis_tables}
+
 }
 
 
