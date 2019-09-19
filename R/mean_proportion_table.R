@@ -141,7 +141,7 @@ mean_proportion_table<-function(design,
   if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)==0){
     combined_output<-integers_analyzed_wide}
   if(length(integer_analysis_tables)==0 &length(factor_analysis_tables)>0){
-    combined_output<-factor_analysis_tables}
+    combined_output<-factors_analyzed_wide}
 
   combined_output
 }
