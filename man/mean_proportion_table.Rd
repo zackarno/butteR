@@ -6,11 +6,11 @@
 \usage{
 mean_proportion_table(design, list_of_variables,
   aggregation_level = NULL, round_to = 2, return_confidence = TRUE,
-  na_replace = FALSE)
+  na_replace = FALSE, questionnaire)
 
 mean_proportion_table(design, list_of_variables,
   aggregation_level = NULL, round_to = 2, return_confidence = TRUE,
-  na_replace = FALSE)
+  na_replace = FALSE, questionnaire)
 }
 \arguments{
 \item{design}{design object}

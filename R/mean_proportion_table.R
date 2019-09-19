@@ -17,13 +17,34 @@ mean_proportion_table<-function(design,
                                 aggregation_level=NULL,
                                 round_to=2,
                                 return_confidence=TRUE,
-                                na_replace=FALSE){
+                                na_replace=FALSE,
+                                questionnaire){
+
   design_srvy<-as_survey(design)
+
+  which_are_select_multiple<-which(
+    sapply(names(design_srvy$variables), questionnaire$question_is_select_multiple)
+  )
+  select_multiple_in_data<-names(which_are_select_multiple)
+  select_multiples_in_list_of_variables<-variables_to_analyze[which(variables_to_analyze%in%select_multiple_in_data)]
+  select_multiples_in_data_with_dot<-paste0(names(which_are_select_multiple),".")
+  vars_selection_helper <- paste0("^(", paste(select_multiples_in_data_with_dot, collapse="|"), ")")
+  select_multiple_logical_names<-select(HH_svy_ob$variables, matches(vars_selection_helper)) %>%
+    select(-ends_with("_other")) %>% colnames()
+  list_of_variables_no_concatenated_select_multiple<-variables_to_analyze [which(variables_to_analyze%in%select_multiple_in_data==FALSE)]
+  list_of_variables<-c(list_of_variables_no_concatenated_select_multiple,select_multiple_logical_names)
+
+  design_srvy$variables<-butteR::questionnaire_factorize_categorical(design_srvy$variables,questionnaire = questionnaire,return_full_data = TRUE)
+
+
+
   integer_analysis_tables<-list()
   factor_analysis_tables<-list()
   list_of_variables<-setdiff(list_of_variables,aggregation_level)
   for(i in 1: length(list_of_variables)){
+
     variable_to_analyze<-list_of_variables[i]
+
     print(variable_to_analyze)
     if(class(design_srvy$variables[[variable_to_analyze]])=="integer"){
       if(na_replace==TRUE){
