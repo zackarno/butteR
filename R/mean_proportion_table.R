@@ -10,6 +10,7 @@
 #' @param round_to The number of digits to round reults to.
 #' @param return_confidence Logical variable. TRUE (default) will return 95 \% confidence interval, FALSE returns no confidence interval
 #' @param na_replace Logical variable. TRUE will replace NA with 0 for integerss and "filtered value" for categorical variables. FALSE (default) will leave NAs in dataset and thus they will automatically be removed during calculation
+#' @param questionaire questionaire generated from koboquest (will need household level for household level analysis and individual for individual level analysis)
 #' @export
 
 mean_proportion_table<-function(design,
