@@ -43,9 +43,7 @@ mean_proportion_table<-function(design,
   factor_analysis_tables<-list()
   list_of_variables<-setdiff(list_of_variables,aggregation_level)
   for(i in 1: length(list_of_variables)){
-
     variable_to_analyze<-list_of_variables[i]
-
     print(variable_to_analyze)
     if(class(design_srvy$variables[[variable_to_analyze]])=="integer"){
       if(na_replace==TRUE){
@@ -163,9 +161,10 @@ mean_proportion_table<-function(design,
   if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)==0){
     combined_output<-integers_analyzed_wide}
   if(length(integer_analysis_tables)==0 &length(factor_analysis_tables)>0){
-    combined_output<-factor_analysis_tables}
-  combined_output
+    combined_output<-factors_analyzed_wide}
 
+  combined_output
 }
+
 
 
