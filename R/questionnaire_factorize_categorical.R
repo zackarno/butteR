@@ -6,7 +6,7 @@
 #' @details
 #' @param data the data set
 #' @param questionnaire koboquest generated questionnnaire object
-#' @param return_full_data logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.
+#' @param return_full_data logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned
 #' @export
 
 questionnaire_factorize_categorical<-function(data, questionnaire,return_full_data=FALSE){

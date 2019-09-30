@@ -12,7 +12,7 @@ questionnaire_factorize_categorical(data, questionnaire,
 
 \item{questionnaire}{koboquest generated questionnnaire object}
 
-\item{return_full_data}{logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.}
+\item{return_full_data}{logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned}
 }
 \description{
 Add all levels from possible answer choices from choices sheet to dataset. This reduces
