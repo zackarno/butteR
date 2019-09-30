@@ -2,16 +2,18 @@
 % Please edit documentation in R/remove_concat_select_multiple.R
 \name{remove_concat_select_multiple}
 \alias{remove_concat_select_multiple}
-\title{REMOVE CONCATENATED SELECT MULTIPLE COLUMNS FROM DATA SET}
+\title{Remove concatenated select multiple columns from data set}
 \usage{
 remove_concat_select_multiple(data, questionnaire)
 }
 \arguments{
-\item{data}{the dataset (data frame). Does not yet support design objects}
+\item{data}{The dataset (data frame).}
 
 \item{questionnaire}{questionnaire object created by the koboquest package}
 }
+\value{
+data set without concatenated select multiple columns
+}
 \description{
-returns the input data frame with concatenated select multiple questions
-removed
+Remove concatenated select multiple columns from data set
 }

@@ -1,13 +1,8 @@
-#'
-#'REMOVE CONCATENATED SELECT MULTIPLE COLUMNS FROM DATA SET
-#'
-#' returns the input data frame with concatenated select multiple questions
-#' removed
-#' @details
-#' @param data the dataset (data frame). Does not yet support design objects
+#' Remove concatenated select multiple columns from data set
+#' @param data The dataset (data frame).
 #' @param questionnaire questionnaire object created by the koboquest package
+#' @return data set without concatenated select multiple columns
 #' @export
-#'
 
 remove_concat_select_multiple<-function(data, questionnaire){
   which_are_select_multiple<-which(

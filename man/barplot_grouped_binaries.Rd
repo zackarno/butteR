@@ -2,17 +2,17 @@
 % Please edit documentation in R/barplot_grouped_binaries.R
 \name{barplot_grouped_binaries}
 \alias{barplot_grouped_binaries}
-\title{BARPLOT GROUPED BINARY COLUMNS}
+\title{Barplot grouped binary columns}
 \usage{
 barplot_grouped_binaries(design, list_of_variables, aggregation_level)
 }
 \arguments{
-\item{design}{design object}
+\item{design}{Design object from survey or srvyr package.}
 
-\item{list_of_variables}{list of variables that you want to plot together}
+\item{list_of_variables}{Vector containing column names to analyze.}
 
-\item{aggregation_level}{the level to aggregate calculations to (this will ultimately be categorical on the Y-Axis)}
+\item{aggregation_level}{Column name to aggregate or dissagregate to OR vector of column names to dissagregate to.}
 }
 \description{
-This function takes a list of variables from a survey object and puts them all on one barplot.
+Barplot grouped binary columns
 }

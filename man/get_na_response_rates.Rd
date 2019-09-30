@@ -2,13 +2,16 @@
 % Please edit documentation in R/get_na_response_rates.R
 \name{get_na_response_rates}
 \alias{get_na_response_rates}
-\title{GET NA PERCENTAGES AND FREQUENCY FOR EACH COLUMN IN DATA SET}
+\title{Get NA percentages and frequency for each column in the data set}
 \usage{
 get_na_response_rates(data)
 }
 \arguments{
-\item{data}{the dataset}
+\item{data}{The dataset (data.frame).}
+}
+\value{
+frequency and proportion table of NA rates.
 }
 \description{
-returns the count of NA and the percentage of NA for each column in a dataset
+Get NA percentages and frequency for each column in the data set
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/barplot_by_groups.R
 \name{barplot_by_group}
 \alias{barplot_by_group}
-\title{BARPLOT GROUPED BINARY COLUMNS}
+\title{Barplot grouped binary columns}
 \usage{
 barplot_by_group(design, list_of_variables, aggregation_level,
   binary = TRUE)
 }
 \arguments{
-\item{design}{design object}
+\item{design}{Design object from survey or srvyr package.}
 
-\item{list_of_variables}{list of variables that you want to plot together}
+\item{list_of_variables}{Vector containing column names to analyze.}
 
-\item{aggregation_level}{the level to aggregate calculations to (this will ultimately be categorical on the Y-Axis)}
+\item{aggregation_level}{Column name to aggregate or dissagregate to OR vector of column names to dissagregate to.}
 
-\item{binary}{If the variables are binary or numeric}
+\item{binary}{Logical (default=TRUE) if the columns are binary or numeric.}
 }
 \description{
-This function takes a list of variables from a survey object and puts them all on one barplot.
+Barplot grouped binary columns
 }
