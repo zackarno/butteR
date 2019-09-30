@@ -2,7 +2,7 @@
 % Please edit documentation in R/mean_proportion_table.R
 \name{mean_proportion_table}
 \alias{mean_proportion_table}
-\title{Calculate the MSNI for 2019}
+\title{Analyze and aggregate weighted categorical data into clean tables}
 \usage{
 mean_proportion_table(design, list_of_variables,
   aggregation_level = NULL, round_to = 2, return_confidence = TRUE,
@@ -27,5 +27,5 @@ mean_proportion_table(design, list_of_variables,
 Analyzed table of variables.
 }
 \description{
-Calculate the MSNI for 2019
+Analyze and aggregate weighted categorical data into clean tables
 }

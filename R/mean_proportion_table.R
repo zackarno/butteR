@@ -1,4 +1,4 @@
-#' Calculate the MSNI for 2019
+#' Analyze and aggregate weighted categorical data into clean tables
 #' @param design Design object from survey or srvyr package.
 #' @param list_of_variables Vector containing column names to analyze.
 #' @param aggregation_level Column name to aggregate or dissagregate to OR vector of column names to dissagregate to.
