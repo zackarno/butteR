@@ -4,19 +4,19 @@
 #' Add all levels from possible answer choices from choices sheet to dataset. This reduces
 #' possible errors that can occur when aggregating and computing summary statistics with survey package
 #'
-#' @param design design object
-#' @param list_of_Variables vector containing all variable names to analyze and include in summary table
-#' @param aggregation_level aggregation level(s) to analyze data by. The default (NULL) will fully aggregate data to provide one value per variable. Argument also accepts vecors to aggregate the data using mroe than one variable.
+#' @param design Design object.
+#' @param list_of_variables Vector containing all variable names to analyze and include in summary table.
+#' @param aggregation_level Aggregation level(s) to analyze data by. The default (NULL) will fully aggregate data to provide one value per variable. Argument also accepts vecors to aggregate the data using mroe than one variable.
 #' @param round_to The number of digits to round reults to.
-#' @param return_confidence Logical variable. TRUE (default) will return 95 % confidence interval, FALSE returns no confidence interval
-#' @param na_replace Logical variable. TRUE will replace NA with 0 for integerss and "filtered value" for categorical variables. FALSE (default) will leave NAs in dataset and thus they will automatically be removed during calculation
-#' @details
+#' @param return_confidence Logical variable. TRUE (default) will return 95 percent confidence interval, FALSE returns no confidence interval.
+#' @param na_replace Logical variable. TRUE will replace NA with 0 for integerss and "filtered value" for categorical variables. FALSE (default) will leave NAs in dataset and thus they will automatically be removed during calculation.
+#' @return Table of summarised, aggregated variables.
 #' @export
 #'
 
 
 
-mean_proportion_table<-function(design,
+mean_prop_working<-function(design,
                                    list_of_variables,
                                    aggregation_level=NULL,
                                    round_to=2,

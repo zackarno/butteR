@@ -2,9 +2,10 @@
 #' @param design Design object from survey or srvyr package.
 #' @param list_of_variables Vector containing column names to analyze.
 #' @param aggregation_level Column name to aggregate or dissagregate to OR vector of column names to dissagregate to.
+#' @param binary Logical (default=TRUE) if the columns are binary or numeric.
 #' @export
 
-barplot_grouped_binaries <- function(design,list_of_variables,aggregation_level) {
+barplot_by_group <- function(design,list_of_variables,aggregation_level, binary=TRUE) {
   design_srvy<-srvyr::as_survey(design)
   severity_int_component_health_graphs<-list()
   int_component_summary<-list()
@@ -33,11 +34,23 @@ barplot_grouped_binaries <- function(design,list_of_variables,aggregation_level)
                                                      fill=colname))+
       colorspace::scale_fill_discrete_qualitative()
   }
-  p1+ geom_bar(position=position_dodge(), stat="identity", colour='black') +
-    geom_errorbar(aes(ymin=mean.stat_low, ymax=mean.stat_upp), width=.2,position=position_dodge(.9))+
-    scale_y_continuous(breaks=seq(0,1, by=0.1),labels = scales::percent_format(accuracy = 1))+
-    labs(x=aggregation_level)+
-    coord_flip()
-
+  if(binary==TRUE){
+    p2<-p1+ geom_bar(position=position_dodge(), stat="identity", colour='black') +
+      geom_errorbar(aes(ymin=mean.stat_low, ymax=mean.stat_upp), width=.2,position=position_dodge(.9))+
+      scale_y_continuous(breaks=seq(0,1, by=0.1),labels = scales::percent_format(accuracy = 1))+
+      labs(x=aggregation_level)+
+      coord_flip()}
+  if(binary==FALSE){
+    range_of_data<-design_srvy$variables[,list_of_variables] %>% range()
+    p2<-p1+ geom_bar(position=position_dodge(), stat="identity", colour='black') +
+      geom_errorbar(aes(ymin=mean.stat_low, ymax=mean.stat_upp), width=.2,position=position_dodge(.9))+
+      scale_y_continuous(breaks=seq(min(range_of_data),max(range_of_data), by=0.5))+
+      labs(x=aggregation_level)+
+      coord_flip()}
+  p2
 }
+
+
+
+
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/questionnaire_factorize_categorical.R
 \name{questionnaire_factorize_categorical}
 \alias{questionnaire_factorize_categorical}
-\title{FACTORIZE ALL CATEGORICAL DATA IN DATA FRAME ACCORDING TO KOBO/ODK QUESTIONNAIRE}
+\title{Factorize all categorical data in data set according to questionnaire options.}
 \usage{
 questionnaire_factorize_categorical(data, questionnaire,
   return_full_data = FALSE)
@@ -10,11 +10,21 @@ questionnaire_factorize_categorical(data, questionnaire,
 \arguments{
 \item{data}{the data set}
 
-\item{questionnaire}{koboquest generated questionnnaire object}
+\item{questionnaire}{Questionnaire genereated from kobo quest package.}
 
-\item{return_full_data}{logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.}
+\item{return_full_data}{Logical (default=FALSE). If TRUE refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.}
+
+\item{round_to}{Decimal place to round to.}
+
+\item{return_confidence}{Logical value specifying whether to return confidence interval.}
+
+\item{na_replace}{Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)}
+
+\item{questionnaire}{Questionnaire genereated from kobo quest package.}
+}
+\value{
+Dataset with cateogrical data factorized according to questionnaire.
 }
 \description{
-Add all levels from possible answer choices from choices sheet to dataset. This reduces
-possible errors that can occur when aggregating and computing summary statistics with survey package
+Factorize all categorical data in data set according to questionnaire options.
 }

@@ -1,13 +1,15 @@
+#' Factorize all categorical data in data set according to questionnaire options.
 #'
-#' FACTORIZE ALL CATEGORICAL DATA IN DATA FRAME ACCORDING TO KOBO/ODK QUESTIONNAIRE
-#'
-#' Add all levels from possible answer choices from choices sheet to dataset. This reduces
-#' possible errors that can occur when aggregating and computing summary statistics with survey package
-#' @details
 #' @param data the data set
-#' @param questionnaire koboquest generated questionnnaire object
-#' @param return_full_data logical. If true, refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.
+#' @param questionnaire Questionnaire genereated from kobo quest package.
+#' @param return_full_data Logical (default=FALSE). If TRUE refactored data will be inserted back into original dataset. If FALSE (default), only the refactored data will be returned.
+#' @param round_to Decimal place to round to.
+#' @param return_confidence Logical value specifying whether to return confidence interval.
+#' @param na_replace Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)
+#' @param questionnaire Questionnaire genereated from kobo quest package.
+#' @return Dataset with cateogrical data factorized according to questionnaire.
 #' @export
+
 
 questionnaire_factorize_categorical<-function(data, questionnaire,return_full_data=FALSE){
   which_are_select_multiple<-which(

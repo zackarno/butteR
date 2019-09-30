@@ -1,14 +1,8 @@
 #'
-#' GET NA PERCENTAGES AND FREQUENCY FOR EACH COLUMN IN DATA SET
-#'
-#' returns the count of NA and the percentage of NA for each column in a dataset
-#'
-#' @param data the dataset
-#'
-#' @details
-#' @return
+#' Get NA percentages and frequency for each column in the data set
+#' @param data The dataset (data.frame).
+#' @return frequency and proportion table of NA rates.
 #' @export
-
 
 get_na_response_rates<-function(data){
   na_count_per_question<-sapply(data, function(y) sum(length(which(is.na(y)))))

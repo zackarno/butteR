@@ -14,4 +14,6 @@ URL: https://github.com/zackarno/butteR
 BugReports: https://github.com/zackarno/butteR/issues
 Imports: 
     dplyr,
-    srvyr
+    srvyr,
+    forcats,
+    tidyr
