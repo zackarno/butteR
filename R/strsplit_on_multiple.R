@@ -1,5 +1,3 @@
-#'
-#'
 #'Split strings on multiple delimeters
 #'
 #' @param x string or vector of strings
@@ -12,7 +10,7 @@
 #' strsplit_on_multiple(x = strings_to_split,
 #'                      separation_pattern)
 #'
-#'
+#'@export
 strsplit_on_multiple<-function(x,separator){
 
   separator<- Hmisc::escapeRegex(separator)
