@@ -19,4 +19,3 @@ match_closest_pt_rtree <- function(sf1, sf2, return_distance=TRUE) {
   return(dist_df)
 }
 
-
