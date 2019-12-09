@@ -5,25 +5,31 @@
 #' @param round_to Decimal place to round to.
 #' @param return_confidence Logical value specifying whether to return confidence interval.
 #' @param na_replace Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)
-#' @param questionnaire Questionnaire genereated from kobo quest package.
+#' @param questionnaire Questionnaire generated from koboquest. If NULL (default) function will attempt to detect select multiple questions automatically. If you have made new indicators which use periods in there names you must remove them from the list_of_variables if you do not supply the koboquest generated questionnaire.
 #' @return Analyzed table of variables.
 #' @export
 #'
+#'
+
 mean_proportion_table<-function(design,
                                 list_of_variables,
                                 aggregation_level=NULL,
                                 round_to=2,
                                 return_confidence=TRUE,
                                 na_replace=FALSE,
-                                questionnaire){
-  design_srvy<-as_survey(design)
+                                questionnaire=NULL){
+  design_srvy<-srvyr::as_survey(design)
+  if(is.null(questionnaire)==TRUE){
+    select_multiple_in_data<-auto_detect_select_multiple(design$variables)
+  }
+  if(is.null(questionnaire)==FALSE){
   which_are_select_multiple<-which(
-    sapply(names(design_srvy$variables), questionnaire$question_is_select_multiple)
-  )
-  select_multiple_in_data<-names(which_are_select_multiple)
+    sapply(names(design_srvy$variables), questionnaire$question_is_select_multiple))
+  select_multiple_in_data<-names(which_are_select_multiple)}
+
   select_multiples_in_list_of_variables<-list_of_variables[which(list_of_variables%in%select_multiple_in_data)]
   if(length(select_multiples_in_list_of_variables)>0){
-  select_multiples_in_data_with_dot<-paste0(names(which_are_select_multiple),".")
+  select_multiples_in_data_with_dot<-paste0(select_multiple_in_data,".")
   select_multiples_in_given_list_with_dot<-paste0(select_multiples_in_list_of_variables, ".")
   vars_selection_helper <- paste0("^(", paste(select_multiples_in_given_list_with_dot, collapse="|"), ")")
   # vars_selection_helper <- paste0("^(", paste(select_multiples_in_data_with_dot, collapse="|"), ")")
@@ -35,7 +41,15 @@ mean_proportion_table<-function(design,
   if(length(select_multiples_in_list_of_variables)==0){
     list_of_variables<-list_of_variables
   }
+  if(is.null(questionnaire)==TRUE){
+    design_srvy$variables<-design_srvy$variables[,colnames(design_srvy$variables) %in% select_multiple_in_data==FALSE]
+    design_srvy$variables<-design_srvy$variables %>%
+      mutate_if(sapply(design_srvy$variables, is.character),as.factor)
+  }
+  if(is.null(questionnaire)==FALSE){
   design_srvy$variables<-butteR::questionnaire_factorize_categorical(design_srvy$variables,questionnaire = questionnaire,return_full_data = TRUE)
+  }
+
   integer_analysis_tables<-list()
   factor_analysis_tables<-list()
   list_of_variables<-setdiff(list_of_variables,aggregation_level)
@@ -168,6 +182,7 @@ mean_proportion_table<-function(design,
     combined_output<-integers_analyzed_wide}
   if(length(integer_analysis_tables)==0 &length(factor_analysis_tables)>0){
     combined_output<-factors_analyzed_wide}
+  return(combined_output)
 }
 
 

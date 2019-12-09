@@ -26,5 +26,4 @@ separation_pattern<-c(" ", "c")
 strsplit_on_multiple(x = strings_to_split,
                      separation_pattern)
 
-
 }

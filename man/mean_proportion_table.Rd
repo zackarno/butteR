@@ -6,7 +6,7 @@
 \usage{
 mean_proportion_table(design, list_of_variables,
   aggregation_level = NULL, round_to = 2, return_confidence = TRUE,
-  na_replace = FALSE, questionnaire)
+  na_replace = FALSE, questionnaire = NULL)
 }
 \arguments{
 \item{design}{Design object from survey or srvyr package.}
@@ -21,7 +21,7 @@ mean_proportion_table(design, list_of_variables,
 
 \item{na_replace}{Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)}
 
-\item{questionnaire}{Questionnaire genereated from kobo quest package.}
+\item{questionnaire}{Questionnaire generated from koboquest. If NULL (default) function will attempt to detect select multiple questions automatically. If you have made new indicators which use periods in there names you must remove them from the list_of_variables if you do not supply the koboquest generated questionnaire.}
 }
 \value{
 Analyzed table of variables.
