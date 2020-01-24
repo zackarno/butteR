@@ -34,8 +34,26 @@ devtools::install_github("zackarno/butteR")
 
 ```{r example}
 library(butteR)
-## basic example code
+library(dplyr)
+lon<-runif(min=88.00863,max=92.68031, n=100)
+lat<-runif(min=20.59061,max=26.63451, n=100)
+strata_options<-LETTERS[1:8]
+
+#make a simulated dataset
+pt_data<-data.frame(lon=lon, lat=lat, strata=sample(strata_options,1000, replace=TRUE))
+sample_frame<-data.frame(strata=strata_options,sample_size=round(runif(10,100,n=8),0))
+
+sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame, 
+                           sample.target.frame.strata = "strata",
+                           sample.target.frame.samp.size = "sample_size",pt.data =pt_data,
+                           pt.data.strata = "strata",pt.data.labels = "strata" ,write_kml = FALSE
+                            )
+
+
 ```
 
 
+  
+  
+  
 

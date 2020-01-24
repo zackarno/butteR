@@ -32,6 +32,7 @@ stratified_sampler<-function(sample.target.frame,
   }
   random_seed_df<-data.frame(random_seed=random_seed)
   isodate<-Sys.Date() %>% stringr::str_replace_all("-","")
+  pt.data$uuid<-seq(1,nrow(pt.data),by=1)
 
   set.seed(random_seed)
   samp<-list()
@@ -71,6 +72,7 @@ stratified_sampler<-function(sample.target.frame,
   samp_binded<-do.call("rbind", samp$results)
   # samp_remaining<-pt.data %>% filter(geometry %in% samp_binded$geometry==FALSE)
   samp_remaining<-pt.data[pt.data$geometry %in% samp_binded$geometry==FALSE,]
+  samp_remaining<-pt.data[pt.data$uuid %in% samp_binded$uuid==FALSE,]
   samp[["samp_remaining"]]<-samp_remaining
   samp[["random_seed"]]<-random_seed
   if(write_kml==TRUE){
