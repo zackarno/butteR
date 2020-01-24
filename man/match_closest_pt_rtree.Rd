@@ -4,7 +4,7 @@
 \alias{match_closest_pt_rtree}
 \title{Find closest point between to spatial point objects using rtree spatial indexing}
 \usage{
-match_closest_pt_rtree(sf1, sf2, return_distance = TRUE)
+match_closest_pt_rtree(sf1, sf2, return_distance = TRUE, k = 1)
 }
 \arguments{
 \item{sf1}{simple feature 1 (point)}
