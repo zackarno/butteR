@@ -37,8 +37,9 @@ First I will make a fake data set and sample frame
 ```{r example}
 library(butteR)
 library(dplyr)
-lon<-runif(min=88.00863,max=92.68031, n=100)
-lat<-runif(min=20.59061,max=26.63451, n=100)
+library(sf)
+lon<-runif(min=88.00863,max=92.68031, n=1000)
+lat<-runif(min=20.59061,max=26.63451, n=1000)
 strata_options<-LETTERS[1:8]
 
 #make a simulated dataset
@@ -95,5 +96,38 @@ You can also view all of the remaining points which were not not randomly sample
 sampler_ouput$samp_remaining %>% head() %>% knitr::kable()
 ```
   
+### Example using the check_distance_from_target function
+
+First I will generate 2 fake point  data sets. The sf package is great!
   
+```{r}
+library(sf)
+lon1<-runif(min=88.00863,max=92.68031, n=1000)
+lat1<-runif(min=20.59061,max=26.63451, n=1000)
+lon2<-runif(min=88.00863,max=92.68031, n=1000)
+lat2<-runif(min=20.59061,max=26.63451, n=1000)
+strata_options<-LETTERS[1:8]
+
+#make a simulated dataset
+pt_data1<-data.frame(lon=lon1, lat=lat1, strata=sample(strata_options,1000, replace=TRUE))
+pt_data2<-data.frame(lon=lon2, lat=lat2, strata=sample(strata_options,1000, replace=TRUE))
+
+# convert to simple feature object
+coords<- c("lon", "lat")
+pt_sf1<- sf::st_as_sf(x = pt_data1, coords=coords, crs=4326)
+pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
+```
+
+
+Next I will run the check_distances from target function. It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+
+```{r}
+pts_further_than_50m_threshold_from_target<-
+  butteR::check_distances_from_target(dataset = pt_sf1,target_points =pt_sf2,dataset_coordinates = coords,
+                                      cols_to_report = "strata", distance_threshold = 50)
+
+
+pts_further_than_50m_threshold_from_target %>% head() %>% knitr::kable()
+```
+
 
