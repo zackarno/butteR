@@ -32,7 +32,9 @@ devtools::install_github("zackarno/butteR")
 
 ### Example using the stratified sampler function
 
-First I will make a fake data set and sample frame
+The stratified sampler function can be useful if you want to generate random samples from spatial point data. It has been most useful for me when I have shelter footparint data that I want to sample. For now, the function only reads in point data. Therefore, if the footprint data you have is polygons it should first be converted to points (centroids). 
+
+I believe the most useful/powerful aspect of this function is the ability to write out well labelled kml/kmz files that can be loaded onto phone and opened with maps.me or other applications. To use this function properly it is important that you first familiarize yourself with some of the theory that underlies random sampling and that you learn how "seeds" can be used/set in R to make random sampling reproducible. The function generates randome seeds and stores it as a an attribute field of the spatial sample. There is also the option to write the seed to the working directory as text file. Understanding how to use the seeds becomes important if you want to reproduce your results, or if you need to do subsequent rounds of sampling where you want to exclude the previous sample without having to read in the previous samples.
 
 ```{r example}
 library(butteR)
@@ -62,7 +64,7 @@ ou can check the function help file by typing ?stratified_sampler. If you want t
 
 
 ```{r}
-?butteR::stratified_sampler
+
 
 
 sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame, 
