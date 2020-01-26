@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # butteR
 
 
-butteR can be used to smooth out the analysis and visualization of spatial survey data collected using odk. ButteR mainly consists of convenient wrappers and pipelines for the survey, srvyr, sf, and rtree packages.
+butteR can be used to smooth out the analysis and visualization of spatial survey data collected using mobile data collection systems (ODK/XLSform). ButteR mainly consists of convenient wrappers and pipelines for the survey, srvyr, sf, and rtree packages.
 
 ## Installation
 
@@ -36,6 +36,9 @@ The stratified sampler function can be useful if you want to generate random sam
 
 I believe the most useful/powerful aspect of this function is the ability to write out well labelled kml/kmz files that can be loaded onto phone and opened with maps.me or other applications. To use this function properly it is important that you first familiarize yourself with some of the theory that underlies random sampling and that you learn how "seeds" can be used/set in R to make random sampling reproducible. The function generates randome seeds and stores it as a an attribute field of the spatial sample. There is also the option to write the seed to the working directory as text file. Understanding how to use the seeds becomes important if you want to reproduce your results, or if you need to do subsequent rounds of sampling where you want to exclude the previous sample without having to read in the previous samples.
 
+
+To show how the function can be used I will first simulate a spatial data set and sample frame
+
 ```{r example}
 library(butteR)
 library(dplyr)
@@ -44,7 +47,7 @@ lon<-runif(min=88.00863,max=92.68031, n=1000)
 lat<-runif(min=20.59061,max=26.63451, n=1000)
 strata_options<-LETTERS[1:8]
 
-#make a simulated dataset
+#simulate datasets
 pt_data<-data.frame(lon=lon, lat=lat, strata=sample(strata_options,1000, replace=TRUE))
 sample_frame<-data.frame(strata=strata_options,sample_size=round(runif(10,100,n=8),0))
 ```
@@ -58,9 +61,9 @@ sample_frame %>% head() %>% knitr::kable()
 ```
 
 
-Next we will produce the stratified sample. Y
+Next we will run the stratified_sampler function using the two simulated data sets as input.
 
-ou can check the function help file by typing ?stratified_sampler. If you want the samples writtent to kmz you will need to change write_kml to FALSE.
+You can check the function help file by typing ?stratified_sampler. There are quite a few parameters to set particularly if you want to write out the kml file. Therefore, it is important to read the functions documentation (it will be worth it).
 
 
 ```{r}
@@ -121,7 +124,9 @@ pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
 ```
 
 
-Next I will run the check_distances from target function. It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+Next I will run the check_distances_from_target function (I need to come up with a better name for this function). It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+
+This functino uses rtree spatial indexing which is the fastest way I have found to measure the closest distances between point data (especially when there are >1000 points in either data set)
 
 ```{r}
 pts_further_than_50m_threshold_from_target<-
