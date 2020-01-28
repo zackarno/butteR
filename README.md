@@ -72,12 +72,12 @@ pt_data %>% head() %>% knitr::kable()
 
 |      lon |      lat | strata |
 | -------: | -------: | :----- |
-| 90.86124 | 23.61462 | D      |
-| 90.92511 | 23.79125 | F      |
-| 88.17487 | 25.19714 | G      |
-| 89.01608 | 26.33037 | B      |
-| 88.79694 | 23.40043 | A      |
-| 89.81085 | 22.79984 | H      |
+| 89.07169 | 22.08302 | D      |
+| 89.06120 | 25.62130 | H      |
+| 88.52233 | 22.98088 | C      |
+| 88.30561 | 21.55179 | D      |
+| 91.73863 | 24.36058 | A      |
+| 90.53446 | 24.72056 | D      |
 
 ``` r
 sample_frame %>% head() %>% knitr::kable()
@@ -85,12 +85,12 @@ sample_frame %>% head() %>% knitr::kable()
 
 | strata | sample\_size |
 | :----- | -----------: |
-| A      |           54 |
-| B      |           35 |
-| C      |           58 |
-| D      |           36 |
-| E      |           96 |
-| F      |           18 |
+| A      |           46 |
+| B      |           77 |
+| C      |           25 |
+| D      |           98 |
+| E      |           47 |
+| F      |           36 |
 
 Next we will run the stratified\_sampler function using the two
 simulated data sets as input.
@@ -121,87 +121,87 @@ sampler_ouput$results %>% purrr:::map(head) %>% knitr::kable()
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_A        |    391171 |   13 |
-| 2\_A        |    391171 |   18 |
-| 3\_A        |    391171 |   33 |
-| 4\_A        |    391171 |   37 |
-| 5\_A        |    391171 |   38 |
-| 6\_A        |    391171 |   43 |
+| 1\_A        |    467273 |   42 |
+| 2\_A        |    467273 |   47 |
+| 3\_A        |    467273 |   48 |
+| 4\_A        |    467273 |   74 |
+| 5\_A        |    467273 |   92 |
+| 6\_A        |    467273 |  105 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_B        |    391171 |   52 |
-| 2\_B        |    391171 |   58 |
-| 3\_B        |    391171 |  119 |
-| 4\_B        |    391171 |  163 |
-| 5\_B        |    391171 |  197 |
-| 6\_B        |    391171 |  209 |
+| 1\_B        |    467273 |   13 |
+| 2\_B        |    467273 |   18 |
+| 3\_B        |    467273 |   31 |
+| 4\_B        |    467273 |   35 |
+| 5\_B        |    467273 |   37 |
+| 6\_B        |    467273 |   57 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_C        |    391171 |   16 |
-| 2\_C        |    391171 |   91 |
-| 3\_C        |    391171 |  107 |
-| 4\_C        |    391171 |  136 |
-| 5\_C        |    391171 |  155 |
-| 6\_C        |    391171 |  183 |
+| 1\_C        |    467273 |   16 |
+| 2\_C        |    467273 |  112 |
+| 3\_C        |    467273 |  123 |
+| 4\_C        |    467273 |  139 |
+| 5\_C        |    467273 |  151 |
+| 6\_C        |    467273 |  170 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_D        |    391171 |   31 |
-| 2\_D        |    391171 |   62 |
-| 3\_D        |    391171 |   63 |
-| 4\_D        |    391171 |   71 |
-| 5\_D        |    391171 |   73 |
-| 6\_D        |    391171 |  128 |
+| 1\_D        |    467273 |    4 |
+| 2\_D        |    467273 |    6 |
+| 3\_D        |    467273 |    8 |
+| 4\_D        |    467273 |   17 |
+| 5\_D        |    467273 |   24 |
+| 6\_D        |    467273 |   27 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_E        |    391171 |   20 |
-| 2\_E        |    391171 |   34 |
-| 3\_E        |    391171 |   42 |
-| 4\_E        |    391171 |   45 |
-| 5\_E        |    391171 |   74 |
-| 6\_E        |    391171 |   83 |
+| 1\_E        |    467273 |    7 |
+| 2\_E        |    467273 |   14 |
+| 3\_E        |    467273 |   34 |
+| 4\_E        |    467273 |   45 |
+| 5\_E        |    467273 |   53 |
+| 6\_E        |    467273 |   75 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_F        |    391171 |    2 |
-| 2\_F        |    391171 |   19 |
-| 3\_F        |    391171 |   23 |
-| 4\_F        |    391171 |   40 |
-| 5\_F        |    391171 |   53 |
-| 6\_F        |    391171 |  168 |
+| 1\_F        |    467273 |    9 |
+| 2\_F        |    467273 |   25 |
+| 3\_F        |    467273 |   36 |
+| 4\_F        |    467273 |   63 |
+| 5\_F        |    467273 |   95 |
+| 6\_F        |    467273 |  127 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_G        |    391171 |    3 |
-| 2\_G        |    391171 |   17 |
-| 3\_G        |    391171 |   27 |
-| 4\_G        |    391171 |   49 |
-| 5\_G        |    391171 |   64 |
-| 6\_G        |    391171 |   81 |
+| 1\_G        |    467273 |   19 |
+| 2\_G        |    467273 |   46 |
+| 3\_G        |    467273 |   65 |
+| 4\_G        |    467273 |  110 |
+| 5\_G        |    467273 |  152 |
+| 6\_G        |    467273 |  161 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_H        |    391171 |  116 |
-| 2\_H        |    391171 |  134 |
-| 3\_H        |    391171 |  138 |
-| 4\_H        |    391171 |  191 |
-| 5\_H        |    391171 |  253 |
-| 6\_H        |    391171 |  256 |
+| 1\_H        |    467273 |   64 |
+| 2\_H        |    467273 |  109 |
+| 3\_H        |    467273 |  177 |
+| 4\_H        |    467273 |  215 |
+| 5\_H        |    467273 |  247 |
+| 6\_H        |    467273 |  249 |
 
 ``` r
 
 
 sampler_ouput$results$D %>% head()
 #>   Description rnd_seed uuid
-#> 1         1_D   391171   31
-#> 2         2_D   391171   62
-#> 3         3_D   391171   63
-#> 4         4_D   391171   71
-#> 5         5_D   391171   73
-#> 6         6_D   391171  128
+#> 1         1_D   467273    4
+#> 2         2_D   467273    6
+#> 3         3_D   467273    8
+#> 4         4_D   467273   17
+#> 5         5_D   467273   24
+#> 6         6_D   467273   27
 ```
 
 The random\_seed is saved in the list as well as an attribute of each
@@ -210,7 +210,7 @@ which is quite useful for subsequent rounds of data collection
 
 ``` r
 sampler_ouput$random_seed 
-#> [1] 391171
+#> [1] 467273
 ```
 
 You can also view all of the remaining points which were not not
@@ -222,14 +222,14 @@ It is generally a good back up policy to write these as well.
 sampler_ouput$samp_remaining %>% head() %>% knitr::kable()
 ```
 
-|   |      lon |      lat | strata | uuid | rnd\_seed |
-| - | -------: | -------: | :----- | ---: | --------: |
-| 1 | 90.86124 | 23.61462 | D      |    1 |    391171 |
-| 4 | 89.01608 | 26.33037 | B      |    4 |    391171 |
-| 5 | 88.79694 | 23.40043 | A      |    5 |    391171 |
-| 6 | 89.81085 | 22.79984 | H      |    6 |    391171 |
-| 7 | 91.63965 | 22.50374 | C      |    7 |    391171 |
-| 8 | 88.33723 | 25.06050 | H      |    8 |    391171 |
+|    |      lon |      lat | strata | uuid | rnd\_seed |
+| -- | -------: | -------: | :----- | ---: | --------: |
+| 1  | 89.07169 | 22.08302 | D      |    1 |    467273 |
+| 2  | 89.06120 | 25.62130 | H      |    2 |    467273 |
+| 3  | 88.52233 | 22.98088 | C      |    3 |    467273 |
+| 5  | 91.73863 | 24.36058 | A      |    5 |    467273 |
+| 10 | 89.53481 | 24.18118 | E      |   10 |    467273 |
+| 11 | 92.59282 | 23.82064 | F      |   11 |    467273 |
 
 ### Example using the check\_distance\_from\_target function
 
@@ -253,7 +253,31 @@ pt_sf1<- sf::st_as_sf(x = pt_data1, coords=coords, crs=4326)
 pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
 ```
 
-Next I will run the check\_distances\_from\_target function (I need to
+Next I will show two spatial verification functions. The first one just
+finds the closest distance between points. It uses rTree spatial
+indexing so it will work quickly on fairly large datasets.
+
+``` r
+
+closest_pts<- butteR::closest_distance_rtree(pt_sf1, pt_sf2)
+#> Warning in rtree::knn.RTree(rTree = sf2_tree, st_coordinates(sf1)[,
+#> c("X", : k was cast to integer, this may lead to unexpected results.
+
+closest_pts %>% head() %>% knitr::kable()
+```
+
+|     | strata | geometry                              | strata.1 | geometry.1                            |   dist\_m |
+| --- | :----- | :------------------------------------ | :------- | :------------------------------------ | --------: |
+| 564 | A      | c(91.0945985394406, 25.3172077776298) | C        | c(91.0900734983338, 25.1887870116862) | 14233.327 |
+| 348 | G      | c(89.7918454457294, 24.3022634395345) | E        | c(89.7715653696236, 24.3359070868734) |  4257.184 |
+| 531 | H      | c(89.5891668225688, 24.2547000117762) | A        | c(89.5680460236584, 24.2121935684295) |  5173.765 |
+| 844 | A      | c(89.8610885371115, 21.597871026245)  | A        | c(89.8879964168891, 21.6249470741691) |  4092.699 |
+| 865 | G      | c(89.0837166745749, 24.4763565831415) | F        | c(89.0265504835223, 24.3371435037359) | 16473.960 |
+| 438 | A      | c(88.2813882996975, 21.0588082609256) | H        | c(88.3817752257694, 21.0861426773399) | 10862.340 |
+
+You could easily just filter the “closest\_pts” ouput by a distance
+threshold of your choice. However to make it simpler I have wrapped this
+function in the function “check\_distances\_from\_target” (I need to
 come up with a better name for this function). It will return all of the
 points in from “dataset”that are further than the set threshold from any
 point in the “target\_points”. It will also show you the distance to the
@@ -261,11 +285,10 @@ closest target point. Obviously this is fake data so there are a ton of
 points returned (I will just display the first 6 rows). In your
 assessment dat there should obviously be much less.
 
-This functino uses rtree spatial indexing which is the fastest way I
-have found to measure the closest distances between point data
-(especially when there are \>1000 points in either data set)
-
 ``` r
+
+
+
 pts_further_than_50m_threshold_from_target<-
   butteR::check_distances_from_target(dataset = pt_sf1,target_points =pt_sf2,dataset_coordinates = coords,
                                       cols_to_report = "strata", distance_threshold = 50)
@@ -278,9 +301,9 @@ pts_further_than_50m_threshold_from_target %>% head() %>% knitr::kable()
 
 | strata |   dist\_m |
 | :----- | --------: |
-| G      |  8879.354 |
-| G      | 11714.494 |
-| F      | 18069.142 |
-| D      |  7706.795 |
-| A      | 11031.078 |
-| D      | 11532.647 |
+| A      | 14233.327 |
+| G      |  4257.184 |
+| H      |  5173.765 |
+| A      |  4092.699 |
+| G      | 16473.960 |
+| A      | 10862.340 |

@@ -127,11 +127,24 @@ pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
 ```
 
 
-Next I will run the check_distances_from_target function (I need to come up with a better name for this function). It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+Next I will show two spatial verification functions. The first one just finds the closest distance between points. It uses rTree spatial indexing so it will work quickly on fairly large datasets. 
 
-This functino uses rtree spatial indexing which is the fastest way I have found to measure the closest distances between point data (especially when there are >1000 points in either data set)
+
 
 ```{r}
+
+closest_pts<- butteR::closest_distance_rtree(pt_sf1, pt_sf2)
+
+closest_pts %>% head() %>% knitr::kable()
+```
+
+You could easily just filter the "closest_pts" ouput by a distance threshold of your choice. However to make it simpler I have wrapped this function in the function "check_distances_from_target" (I need to come up with a better name for this function). It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+
+
+```{r}
+
+
+
 pts_further_than_50m_threshold_from_target<-
   butteR::check_distances_from_target(dataset = pt_sf1,target_points =pt_sf2,dataset_coordinates = coords,
                                       cols_to_report = "strata", distance_threshold = 50)
