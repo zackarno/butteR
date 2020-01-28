@@ -110,6 +110,8 @@ First I will generate 2 fake point  data sets. The sf package is great!
   
 ```{r}
 library(sf)
+
+set.seed(799)
 lon1<-runif(min=88.00863,max=92.68031, n=1000)
 lat1<-runif(min=20.59061,max=26.63451, n=1000)
 lon2<-runif(min=88.00863,max=92.68031, n=1000)
@@ -144,7 +146,7 @@ You could easily just filter the "closest_pts" ouput by a distance threshold of 
 ```{r}
 
 
-
+set.seed(799)
 pts_further_than_50m_threshold_from_target<-
   butteR::check_distances_from_target(dataset = pt_sf1,target_points =pt_sf2,dataset_coordinates = coords,
                                       cols_to_report = "strata", distance_threshold = 50)
