@@ -9,7 +9,7 @@
 #' @param target_gdb folde to output kml files  to. If empty/null (default) files will write to current working directory
 #' @param seed set and save random seed (will set by default)
 #' @param write_kml logical, write output to kml
-#' @param write_remaining_sample_kml logical, write remaining sample to kml
+#' @param write_remaining_sample_kml logical, write remaining sample to csv
 #' @return list with each sample as sf object. Exports each item in list to kml file in selected directory
 #' @export
 
@@ -24,7 +24,7 @@ stratified_sampler<-function(sample.target.frame,
                              target_gdb=NULL,
                              seed=NULL,
                              write_kml=TRUE,
-                             write_remaining_sample_kml=TRUE){
+                             write_remaining_sample_csv=TRUE){
   if(is.null(seed)){
     random_seed<-sample(1000000, 1)
   } else{
@@ -47,7 +47,7 @@ stratified_sampler<-function(sample.target.frame,
     sampled_centroids<-sampled_centroids %>%
       mutate(index=1:nrow(.),
              Description=paste0(index,"_",!!sym(pt.data.labels)) %>% stringr::str_replace_all(" ","_")) %>%
-      select(Description,rnd_seed)
+      select(Description,rnd_seed,uuid)
     samp$results[[strata_temp]]<-sampled_centroids
     if(write_kml==TRUE){
 
@@ -71,13 +71,13 @@ stratified_sampler<-function(sample.target.frame,
 
   samp_binded<-do.call("rbind", samp$results)
   # samp_remaining<-pt.data %>% filter(geometry %in% samp_binded$geometry==FALSE)
-  samp_remaining<-pt.data[pt.data$geometry %in% samp_binded$geometry==FALSE,]
+  # samp_remaining<-pt.data[pt.data$geometry %in% samp_binded$geometry==FALSE,]
   samp_remaining<-pt.data[pt.data$uuid %in% samp_binded$uuid==FALSE,]
   samp[["samp_remaining"]]<-samp_remaining
   samp[["random_seed"]]<-random_seed
   if(write_kml==TRUE){
     write.table(random_seed_df,paste0(gdb, isodate,"_random_seed_",random_seed,".txt"))
-    if(write_remaining_sample_kml==TRUE){
+    if(write_remaining_sample_csv==TRUE){
       write.csv(samp_remaining, paste0(gdb,isodate,"_samp_remaining.csv"))
 
   }}

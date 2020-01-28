@@ -72,12 +72,12 @@ pt_data %>% head() %>% knitr::kable()
 
 |      lon |      lat | strata |
 | -------: | -------: | :----- |
-| 91.55454 | 24.00920 | A      |
-| 92.66323 | 25.02535 | E      |
-| 91.81419 | 21.01008 | C      |
-| 90.96015 | 26.06549 | E      |
-| 92.33163 | 23.48827 | F      |
-| 91.43074 | 25.72843 | F      |
+| 90.86124 | 23.61462 | D      |
+| 90.92511 | 23.79125 | F      |
+| 88.17487 | 25.19714 | G      |
+| 89.01608 | 26.33037 | B      |
+| 88.79694 | 23.40043 | A      |
+| 89.81085 | 22.79984 | H      |
 
 ``` r
 sample_frame %>% head() %>% knitr::kable()
@@ -85,12 +85,12 @@ sample_frame %>% head() %>% knitr::kable()
 
 | strata | sample\_size |
 | :----- | -----------: |
-| A      |           63 |
-| B      |           26 |
-| C      |           46 |
-| D      |           18 |
-| E      |           31 |
-| F      |           21 |
+| A      |           54 |
+| B      |           35 |
+| C      |           58 |
+| D      |           36 |
+| E      |           96 |
+| F      |           18 |
 
 Next we will run the stratified\_sampler function using the two
 simulated data sets as input.
@@ -107,7 +107,7 @@ documentation (it will be worth it).
 sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame, 
                            sample.target.frame.strata = "strata",
                            sample.target.frame.samp.size = "sample_size",pt.data =pt_data,
-                           pt.data.strata = "strata",pt.data.labels = "strata" ,write_kml = FALSE,target_gdb = 
+                           pt.data.strata = "strata",pt.data.labels = "strata" ,write_kml = FALSE 
                             )
 ```
 
@@ -119,89 +119,89 @@ collectively or one at a time.
 sampler_ouput$results %>% purrr:::map(head) %>% knitr::kable()
 ```
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_A        |    983939 |
-| 2\_A        |    983939 |
-| 3\_A        |    983939 |
-| 4\_A        |    983939 |
-| 5\_A        |    983939 |
-| 6\_A        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_A        |    391171 |   13 |
+| 2\_A        |    391171 |   18 |
+| 3\_A        |    391171 |   33 |
+| 4\_A        |    391171 |   37 |
+| 5\_A        |    391171 |   38 |
+| 6\_A        |    391171 |   43 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_B        |    983939 |
-| 2\_B        |    983939 |
-| 3\_B        |    983939 |
-| 4\_B        |    983939 |
-| 5\_B        |    983939 |
-| 6\_B        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_B        |    391171 |   52 |
+| 2\_B        |    391171 |   58 |
+| 3\_B        |    391171 |  119 |
+| 4\_B        |    391171 |  163 |
+| 5\_B        |    391171 |  197 |
+| 6\_B        |    391171 |  209 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_C        |    983939 |
-| 2\_C        |    983939 |
-| 3\_C        |    983939 |
-| 4\_C        |    983939 |
-| 5\_C        |    983939 |
-| 6\_C        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_C        |    391171 |   16 |
+| 2\_C        |    391171 |   91 |
+| 3\_C        |    391171 |  107 |
+| 4\_C        |    391171 |  136 |
+| 5\_C        |    391171 |  155 |
+| 6\_C        |    391171 |  183 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_D        |    983939 |
-| 2\_D        |    983939 |
-| 3\_D        |    983939 |
-| 4\_D        |    983939 |
-| 5\_D        |    983939 |
-| 6\_D        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_D        |    391171 |   31 |
+| 2\_D        |    391171 |   62 |
+| 3\_D        |    391171 |   63 |
+| 4\_D        |    391171 |   71 |
+| 5\_D        |    391171 |   73 |
+| 6\_D        |    391171 |  128 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_E        |    983939 |
-| 2\_E        |    983939 |
-| 3\_E        |    983939 |
-| 4\_E        |    983939 |
-| 5\_E        |    983939 |
-| 6\_E        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_E        |    391171 |   20 |
+| 2\_E        |    391171 |   34 |
+| 3\_E        |    391171 |   42 |
+| 4\_E        |    391171 |   45 |
+| 5\_E        |    391171 |   74 |
+| 6\_E        |    391171 |   83 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_F        |    983939 |
-| 2\_F        |    983939 |
-| 3\_F        |    983939 |
-| 4\_F        |    983939 |
-| 5\_F        |    983939 |
-| 6\_F        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_F        |    391171 |    2 |
+| 2\_F        |    391171 |   19 |
+| 3\_F        |    391171 |   23 |
+| 4\_F        |    391171 |   40 |
+| 5\_F        |    391171 |   53 |
+| 6\_F        |    391171 |  168 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_G        |    983939 |
-| 2\_G        |    983939 |
-| 3\_G        |    983939 |
-| 4\_G        |    983939 |
-| 5\_G        |    983939 |
-| 6\_G        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_G        |    391171 |    3 |
+| 2\_G        |    391171 |   17 |
+| 3\_G        |    391171 |   27 |
+| 4\_G        |    391171 |   49 |
+| 5\_G        |    391171 |   64 |
+| 6\_G        |    391171 |   81 |
 
-| Description | rnd\_seed |
-| :---------- | --------: |
-| 1\_H        |    983939 |
-| 2\_H        |    983939 |
-| 3\_H        |    983939 |
-| 4\_H        |    983939 |
-| 5\_H        |    983939 |
-| 6\_H        |    983939 |
+| Description | rnd\_seed | uuid |
+| :---------- | --------: | ---: |
+| 1\_H        |    391171 |  116 |
+| 2\_H        |    391171 |  134 |
+| 3\_H        |    391171 |  138 |
+| 4\_H        |    391171 |  191 |
+| 5\_H        |    391171 |  253 |
+| 6\_H        |    391171 |  256 |
 
 ``` r
 
 
 sampler_ouput$results$D %>% head()
-#>   Description rnd_seed
-#> 1         1_D   983939
-#> 2         2_D   983939
-#> 3         3_D   983939
-#> 4         4_D   983939
-#> 5         5_D   983939
-#> 6         6_D   983939
+#>   Description rnd_seed uuid
+#> 1         1_D   391171   31
+#> 2         2_D   391171   62
+#> 3         3_D   391171   63
+#> 4         4_D   391171   71
+#> 5         5_D   391171   73
+#> 6         6_D   391171  128
 ```
 
 The random\_seed is saved in the list as well as an attribute of each
@@ -210,7 +210,7 @@ which is quite useful for subsequent rounds of data collection
 
 ``` r
 sampler_ouput$random_seed 
-#> [1] 983939
+#> [1] 391171
 ```
 
 You can also view all of the remaining points which were not not
@@ -222,14 +222,14 @@ It is generally a good back up policy to write these as well.
 sampler_ouput$samp_remaining %>% head() %>% knitr::kable()
 ```
 
-|      lon |      lat | strata | uuid | rnd\_seed |
-| -------: | -------: | :----- | ---: | --------: |
-| 91.55454 | 24.00920 | A      |    1 |    983939 |
-| 92.66323 | 25.02535 | E      |    2 |    983939 |
-| 91.81419 | 21.01008 | C      |    3 |    983939 |
-| 90.96015 | 26.06549 | E      |    4 |    983939 |
-| 92.33163 | 23.48827 | F      |    5 |    983939 |
-| 91.43074 | 25.72843 | F      |    6 |    983939 |
+|   |      lon |      lat | strata | uuid | rnd\_seed |
+| - | -------: | -------: | :----- | ---: | --------: |
+| 1 | 90.86124 | 23.61462 | D      |    1 |    391171 |
+| 4 | 89.01608 | 26.33037 | B      |    4 |    391171 |
+| 5 | 88.79694 | 23.40043 | A      |    5 |    391171 |
+| 6 | 89.81085 | 22.79984 | H      |    6 |    391171 |
+| 7 | 91.63965 | 22.50374 | C      |    7 |    391171 |
+| 8 | 88.33723 | 25.06050 | H      |    8 |    391171 |
 
 ### Example using the check\_distance\_from\_target function
 
@@ -276,11 +276,11 @@ pts_further_than_50m_threshold_from_target<-
 pts_further_than_50m_threshold_from_target %>% head() %>% knitr::kable()
 ```
 
-| strata |    dist\_m |
-| :----- | ---------: |
-| H      | 10938.6456 |
-| H      | 16596.5112 |
-| F      |  1811.1221 |
-| H      |  9119.0870 |
-| C      |   985.1174 |
-| H      | 16024.2736 |
+| strata |   dist\_m |
+| :----- | --------: |
+| G      |  8879.354 |
+| G      | 11714.494 |
+| F      | 18069.142 |
+| D      |  7706.795 |
+| A      | 11031.078 |
+| D      | 11532.647 |

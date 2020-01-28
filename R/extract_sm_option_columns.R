@@ -18,7 +18,7 @@ extract_sm_option_columns<-function(df,name_vector){
     filter(n>1) %>%
     pull(col_names)
   matched_vector_to_sel_mult_ind<-match(name_vector, select_multiple_detected)
-  matched_vector_to_sel_mult_ind<-matched_vector_to_sel_mult[!is.na(matched_vector_to_sel_mult)]
+  matched_vector_to_sel_mult_ind<-matched_vector_to_sel_mult_ind[!is.na(matched_vector_to_sel_mult_ind)]
   sm_in_vect<-select_multiple_detected[matched_vector_to_sel_mult_ind] %>% as.character()
   sm_in_vect_with_dot<-paste0(sm_in_vect,".")
   parent_option_list<-list()

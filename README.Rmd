@@ -50,6 +50,8 @@ strata_options<-LETTERS[1:8]
 #simulate datasets
 pt_data<-data.frame(lon=lon, lat=lat, strata=sample(strata_options,1000, replace=TRUE))
 sample_frame<-data.frame(strata=strata_options,sample_size=round(runif(10,100,n=8),0))
+
+
 ```
 
 
@@ -73,8 +75,9 @@ You can check the function help file by typing ?stratified_sampler. There are qu
 sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame, 
                            sample.target.frame.strata = "strata",
                            sample.target.frame.samp.size = "sample_size",pt.data =pt_data,
-                           pt.data.strata = "strata",pt.data.labels = "strata" ,write_kml = FALSE,target_gdb = 
+                           pt.data.strata = "strata",pt.data.labels = "strata" ,write_kml = FALSE 
                             )
+
 
 ```
 

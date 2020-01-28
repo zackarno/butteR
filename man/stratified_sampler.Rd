@@ -7,7 +7,7 @@
 stratified_sampler(sample.target.frame, sample.target.frame.strata,
   sample.target.frame.samp.size, pt.data, pt.data.strata, pt.data.labels,
   target_gdb = NULL, seed = NULL, write_kml = TRUE,
-  write_remaining_sample_kml = TRUE)
+  write_remaining_sample_csv = TRUE)
 }
 \arguments{
 \item{sample.target.frame}{data frame with strata, and sample size columns}
@@ -28,7 +28,7 @@ stratified_sampler(sample.target.frame, sample.target.frame.strata,
 
 \item{write_kml}{logical, write output to kml}
 
-\item{write_remaining_sample_kml}{logical, write remaining sample to kml}
+\item{write_remaining_sample_kml}{logical, write remaining sample to csv}
 }
 \value{
 list with each sample as sf object. Exports each item in list to kml file in selected directory
