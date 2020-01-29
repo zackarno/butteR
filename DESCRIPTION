@@ -16,4 +16,6 @@ Imports:
     dplyr,
     srvyr,
     forcats,
-    tidyr
+    tidyr,
+    sf,
+    rtree
