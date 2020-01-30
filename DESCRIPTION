@@ -17,5 +17,4 @@ Imports:
     srvyr,
     forcats,
     tidyr,
-    sf,
-    rtree
+    sf

@@ -4,7 +4,7 @@
 \alias{closest_distance_rtree}
 \title{closest_distance_rtree}
 \usage{
-closest_distance_rtree(sf1, sf2, k = 1)
+closest_distance_rtree(sf1, sf2, k = 1, sf1_coords = c("X", "Y"))
 }
 \arguments{
 \item{sf1}{simple feature 1 (point)}

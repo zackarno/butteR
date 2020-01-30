@@ -5,8 +5,9 @@
 #' @param return_distance return the closest point with a vector indicating distance (m). Default = TRUE
 #' @return sf1 with closest record from sf2 attached.
 #' @export
-#' @importFrom rtree Rtree knn knn.Rtree
+
 #' @importFrom sf st_distance
+
 
 match_closest_pt_rtree <- function(sf1, sf2, return_distance=TRUE, k=1) {
   sf2_tree<- rtree::RTree(st_coordinates(sf2))
@@ -20,12 +21,14 @@ match_closest_pt_rtree <- function(sf1, sf2, return_distance=TRUE, k=1) {
     dist_df<-data.frame(sf1, sf2[unlist(knn1_index),])}
   return(dist_df)}
 
+
+
 #' closest_distance_rtree
 #' @param sf1 simple feature 1 (point)
 #' @param sf2 simple feature 2 (point).
 #' @return sf1 with closest record from sf2 attached.
 #' @export
-#' @importFrom rtree Rtree knn knn.Rtree
+
 #' @importFrom sf st_distance
 
 
