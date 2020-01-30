@@ -31,7 +31,7 @@ check_reported_strata_against_spatial_poly<- function(dataset,
   dataset_sf<-sf::st_as_sf(dataset,coords= dataset_coordinates, crs=4326)
   data_poly_joined<-sf::st_join(dataset_sf, strata_poly)
   strata_that_dont_match_spatial_poly<-data_poly_joined %>%
-    st_drop_geometry() %>%e
+    st_drop_geometry() %>%
     filter(!!sym(dataset_strata_name)!=!!sym(poly_strata_name)) %>%
     select(cols_to_report,dataset_strata_name, poly_strata_name)
   return(strata_that_dont_match_spatial_poly)
