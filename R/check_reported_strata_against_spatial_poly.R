@@ -24,7 +24,10 @@
 check_reported_strata_against_spatial_poly<- function(dataset,
                                                       strata_poly,
                                                       dataset_coordinates=c("X_gps_reading_longitude" , "X_gps_reading_latitude"),
-                                                      dataset_strata_name, poly_strata_name, cols_to_report=c("X_uuid","enumerator_id")){
+                                                      dataset_strata_name,
+                                                      poly_strata_name,
+                                                      cols_to_report=c("X_uuid","enumerator_id")){
+
   dataset_sf<-sf::st_as_sf(dataset,coords= dataset_coordinates, crs=4326)
   data_poly_joined<-sf::st_join(dataset_sf, strata_poly)
   strata_that_dont_match_spatial_poly<-data_poly_joined %>%
