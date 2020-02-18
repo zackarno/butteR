@@ -3,7 +3,7 @@
 #' @param list_of_variables Vector containing column names to analyze.
 #' @param aggregation_level Column name to aggregate or dissagregate to OR vector of column names to dissagregate to.
 #' @param round_to Decimal place to round to.
-#' @param return_confidence Logical value specifying whether to return confidence interval.
+#' @param return_confidence Logical value specifying whether to return confidence interval (default = FALSE).
 #' @param na_replace Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)
 #' @param questionnaire Questionnaire generated from koboquest. If NULL (default) function will attempt to detect select multiple questions automatically. If you have made new indicators which use periods in there names you must remove them from the list_of_variables if you do not supply the koboquest generated questionnaire.
 #' @return Analyzed table of variables.

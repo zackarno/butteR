@@ -5,7 +5,7 @@
 \title{Analyze and aggregate weighted categorical data into clean tables}
 \usage{
 mean_proportion_table(design, list_of_variables,
-  aggregation_level = NULL, round_to = 2, return_confidence = TRUE,
+  aggregation_level = NULL, round_to = 2, return_confidence = FALSE,
   na_replace = FALSE, questionnaire = NULL)
 }
 \arguments{
@@ -17,7 +17,7 @@ mean_proportion_table(design, list_of_variables,
 
 \item{round_to}{Decimal place to round to.}
 
-\item{return_confidence}{Logical value specifying whether to return confidence interval.}
+\item{return_confidence}{Logical value specifying whether to return confidence interval (default = FALSE).}
 
 \item{na_replace}{Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)}
 
