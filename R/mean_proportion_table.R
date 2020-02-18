@@ -15,7 +15,7 @@ mean_proportion_table<-function(design,
                                 list_of_variables,
                                 aggregation_level=NULL,
                                 round_to=2,
-                                return_confidence=TRUE,
+                                return_confidence=FALSE,
                                 na_replace=FALSE,
                                 questionnaire=NULL){
   design_srvy<-srvyr::as_survey(design)
@@ -99,7 +99,7 @@ mean_proportion_table<-function(design,
         factors_analyzed<-design_srvy %>%
           group_by(!!!aggregate_by,.drop=FALSE) %>%
           summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci" )) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
           mutate(question.response=paste0(question,".", answer_choice)) %>%
           select(question.response,mean.stat:mean.stat_upp)
       } else {
@@ -107,7 +107,7 @@ mean_proportion_table<-function(design,
         factors_analyzed<-design_srvy %>%
           group_by(!!!aggregate_by,.drop=FALSE) %>%
           summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci" )) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
           mutate(question.response=paste0(question,".", answer_choice)) %>%
           select(!!(aggregation_level), question.response, mean.stat:mean.stat_upp)
       }
@@ -118,7 +118,7 @@ mean_proportion_table<-function(design,
         factor_analysis_tables[[i]]<-design_srvy %>%
           group_by(!!!aggregate_by,!!sym(variable_to_analyze),.drop=FALSE) %>%
           summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci")) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
           mutate(question.response=paste0(question,".", answer_choice))
       }
     }}
