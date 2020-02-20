@@ -4,8 +4,16 @@
 \alias{check_main_repeat_consistency}
 \title{Check consistencies between main data set and repeat data set}
 \usage{
-check_main_repeat_consistency(main_dataset, main_col1, main_col2,
-  main_uuid, repeat_dataset, repeat_col1, repeat_col2, repeat_uuid)
+check_main_repeat_consistency(
+  main_dataset,
+  main_col1,
+  main_col2,
+  main_uuid,
+  repeat_dataset,
+  repeat_col1,
+  repeat_col2,
+  repeat_uuid
+)
 }
 \arguments{
 \item{main_dataset}{main data set}

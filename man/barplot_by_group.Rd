@@ -4,8 +4,7 @@
 \alias{barplot_by_group}
 \title{Barplot grouped binary columns}
 \usage{
-barplot_by_group(design, list_of_variables, aggregation_level,
-  binary = TRUE)
+barplot_by_group(design, list_of_variables, aggregation_level, binary = TRUE)
 }
 \arguments{
 \item{design}{Design object from survey or srvyr package.}

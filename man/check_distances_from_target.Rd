@@ -4,8 +4,13 @@
 \alias{check_distances_from_target}
 \title{check distance from target}
 \usage{
-check_distances_from_target(dataset, target_points, dataset_coordinates,
-  cols_to_report, distance_threshold = 25)
+check_distances_from_target(
+  dataset,
+  target_points,
+  dataset_coordinates,
+  cols_to_report,
+  distance_threshold = 25
+)
 }
 \arguments{
 \item{dataset}{dataset}
