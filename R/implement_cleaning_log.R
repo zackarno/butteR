@@ -14,6 +14,8 @@ implement_cleaning_log <- function(df,
                                    cl,
                                    cl_change_col,
                                    cl_uuid,cl_new_val){
+  cl[[cl_change_col]]<-cl[[cl_change_col]] %>% trimws()
+  cl[[cl_new_val]]<-cl[[cl_new_val]] %>% trimws()
 
   if(all(cl[[cl_change_col]] %in% colnames(df))==F){
     problem_question_in_cl<-cl[[cl_change_col]][cl[[cl_change_col]] %in% colnames(df)==FALSE]
