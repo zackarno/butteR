@@ -84,6 +84,7 @@ check_cleaning_log <- function(df,
     print("cleaning log has issues, see output table")
   }
   else{
+    cl_problems_df<-"no issues in cleaning log found"
     print("no issues in cleaning log found")
   }
   return(cl_problems_df)
