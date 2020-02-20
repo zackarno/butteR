@@ -43,3 +43,49 @@ implement_cleaning_log <- function(df,
 
   return(df)
 }
+
+
+
+
+
+
+
+
+#' check cleaning log
+#' @param df raw data (data.frame)
+#' @param df_uuid column in raw data with uuid
+#' @param cl cleaning log (data.frame)
+#' @param cl_change_col column in cleaning log which specifies data set column to change
+#' @param cl_uuid uuid in cleaning log
+#' @param cl_new_val cleaning log column specifying the new correct value
+#' @return cleaning log with only problematic entries and note specifying problem
+#' @export
+
+
+check_cleaning_log <- function(df,
+                               df_uuid,
+                               cl,
+                               cl_change_col,
+                               cl_uuid,cl_new_val){
+  cl[[cl_change_col]]<-cl[[cl_change_col]] %>% trimws()
+  cl[[cl_new_val]]<-cl[[cl_new_val]] %>% trimws()
+
+  cl_change_col_prob_df<-cl %>%
+    mutate(cl_prob="question_does_not_exist") %>%
+    filter(!!sym(cl_change_col) %in% colnames(df)==FALSE) %>%
+    select(cl_prob,everything())
+  cl_uuid_prob_df<-cl %>% filter(!!sym(cl_uuid) %in% df[[df_uuid]]==FALSE)%>%
+    mutate(cl_prob="uuid_does_not_exist") %>%
+    filter(!!sym(cl_uuid) %in% df[[df_uuid]]==FALSE) %>%
+    select(cl_prob,everything())
+
+  cl_problems_df<-bind_rows(get0("cl_change_col_prob_df"), get0("cl_uuid_prob_df"))
+  if(nrow(cl_problems_df)>0){
+    print("cleaning log has issues, see output table")
+  }
+  else{
+    print("no issues in cleaning log found")
+  }
+  return(cl_problems_df)
+
+}
