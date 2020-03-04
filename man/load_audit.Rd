@@ -4,10 +4,18 @@
 \alias{load_audit}
 \title{Load audit files}
 \usage{
-load_audit(data, path.to.zip, path.to.unzip, copy.zip = TRUE,
-  path.to.copy.zip, filter.column = "informed_consent",
-  filter.on = "yes", uuid.column = "X_uuid", delete.unzipped = TRUE,
-  days.ago.reported = 0)
+load_audit(
+  data,
+  path.to.zip,
+  path.to.unzip,
+  copy.zip = TRUE,
+  path.to.copy.zip,
+  filter.column = "informed_consent",
+  filter.on = "yes",
+  uuid.column = "X_uuid",
+  delete.unzipped = TRUE,
+  days.ago.reported = 0
+)
 }
 \arguments{
 \item{data}{data set}

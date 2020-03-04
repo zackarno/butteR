@@ -4,8 +4,11 @@
 \alias{questionnaire_factorize_categorical}
 \title{Factorize all categorical data in data set according to questionnaire options.}
 \usage{
-questionnaire_factorize_categorical(data, questionnaire,
-  return_full_data = FALSE)
+questionnaire_factorize_categorical(
+  data,
+  questionnaire,
+  return_full_data = FALSE
+)
 }
 \arguments{
 \item{data}{the data set}
@@ -19,8 +22,6 @@ questionnaire_factorize_categorical(data, questionnaire,
 \item{return_confidence}{Logical value specifying whether to return confidence interval.}
 
 \item{na_replace}{Logical value (default = FALSE) of whether to replace NA with 0 (numerical) or "filtered" (categorical)}
-
-\item{questionnaire}{Questionnaire genereated from kobo quest package.}
 }
 \value{
 Dataset with cateogrical data factorized according to questionnaire.

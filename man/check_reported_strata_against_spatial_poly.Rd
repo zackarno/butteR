@@ -4,10 +4,14 @@
 \alias{check_reported_strata_against_spatial_poly}
 \title{check_reported_strata_against_spatial_poly}
 \usage{
-check_reported_strata_against_spatial_poly(dataset, strata_poly,
-  dataset_coordinates = c("X_gps_reading_longitude",
-  "X_gps_reading_latitude"), dataset_strata_name, poly_strata_name,
-  cols_to_report = c("X_uuid", "enumerator_id"))
+check_reported_strata_against_spatial_poly(
+  dataset,
+  strata_poly,
+  dataset_coordinates = c("X_gps_reading_longitude", "X_gps_reading_latitude"),
+  dataset_strata_name,
+  poly_strata_name,
+  cols_to_report = c("X_uuid", "enumerator_id")
+)
 }
 \arguments{
 \item{dataset}{data set with coordinates}

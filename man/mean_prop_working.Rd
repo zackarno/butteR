@@ -4,8 +4,14 @@
 \alias{mean_prop_working}
 \title{Generate Summary Tables For Chosen Columns/Indicators/Questions}
 \usage{
-mean_prop_working(design, list_of_variables, aggregation_level = NULL,
-  round_to = 2, return_confidence = TRUE, na_replace = FALSE)
+mean_prop_working(
+  design,
+  list_of_variables,
+  aggregation_level = NULL,
+  round_to = 2,
+  return_confidence = TRUE,
+  na_replace = FALSE
+)
 }
 \arguments{
 \item{design}{Design object.}

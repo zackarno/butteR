@@ -4,10 +4,18 @@
 \alias{stratified_sampler}
 \title{Stratified simple random sampling.}
 \usage{
-stratified_sampler(sample.target.frame, sample.target.frame.strata,
-  sample.target.frame.samp.size, pt.data, pt.data.strata, pt.data.labels,
-  target_gdb = NULL, seed = NULL, write_kml = TRUE,
-  write_remaining_sample_csv = TRUE)
+stratified_sampler(
+  sample.target.frame,
+  sample.target.frame.strata,
+  sample.target.frame.samp.size,
+  pt.data,
+  pt.data.strata,
+  pt.data.labels,
+  target_gdb = NULL,
+  seed = NULL,
+  write_kml = TRUE,
+  write_remaining_sample_csv = TRUE
+)
 }
 \arguments{
 \item{sample.target.frame}{data frame with strata, and sample size columns}

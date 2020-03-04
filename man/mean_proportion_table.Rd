@@ -4,9 +4,15 @@
 \alias{mean_proportion_table}
 \title{Analyze and aggregate weighted categorical data into clean tables}
 \usage{
-mean_proportion_table(design, list_of_variables,
-  aggregation_level = NULL, round_to = 2, return_confidence = FALSE,
-  na_replace = FALSE, questionnaire = NULL)
+mean_proportion_table(
+  design,
+  list_of_variables,
+  aggregation_level = NULL,
+  round_to = 2,
+  return_confidence = FALSE,
+  na_replace = FALSE,
+  questionnaire = NULL
+)
 }
 \arguments{
 \item{design}{Design object from survey or srvyr package.}

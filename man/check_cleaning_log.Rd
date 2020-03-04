@@ -4,7 +4,15 @@
 \alias{check_cleaning_log}
 \title{check cleaning log}
 \usage{
-check_cleaning_log(df, df_uuid, cl, cl_change_col, cl_uuid, cl_new_val)
+check_cleaning_log(
+  df,
+  df_uuid,
+  cl,
+  cl_change_type_col,
+  cl_change_col,
+  cl_uuid,
+  cl_new_val
+)
 }
 \arguments{
 \item{df}{raw data (data.frame)}
@@ -12,6 +20,8 @@ check_cleaning_log(df, df_uuid, cl, cl_change_col, cl_uuid, cl_new_val)
 \item{df_uuid}{column in raw data with uuid}
 
 \item{cl}{cleaning log (data.frame)}
+
+\item{cl_change_type_col}{column in cleaning log which specifies change type to be made}
 
 \item{cl_change_col}{column in cleaning log which specifies data set column to change}
 
