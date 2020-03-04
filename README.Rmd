@@ -32,14 +32,14 @@ devtools::install_github("zackarno/butteR")
 
 ### Example using the stratified sampler function
 
-The stratified sampler function can be useful if you want to generate random samples from spatial point data. It has been most useful for me when I have shelter footparint data that I want to sample. For now, the function only reads in point data. Therefore, if the footprint data you have is polygons it should first be converted to points (centroids). 
+The stratified sampler function can be useful if you want to generate random samples from spatial point data. It has been most useful for me when I have shelter footprint data that I want to sample. For now, the function only reads in point data. Therefore, if the footprint data you have is polygons it should first be converted to points (centroids). 
 
-I believe the most useful/powerful aspect of this function is the ability to write out well labelled kml/kmz files that can be loaded onto phone and opened with maps.me or other applications. To use this function properly it is important that you first familiarize yourself with some of the theory that underlies random sampling and that you learn how "seeds" can be used/set in R to make random sampling reproducible. The function generates randome seeds and stores it as a an attribute field of the spatial sample. There is also the option to write the seed to the working directory as text file. Understanding how to use the seeds becomes important if you want to reproduce your results, or if you need to do subsequent rounds of sampling where you want to exclude the previous sample without having to read in the previous samples.
+I believe the most useful/powerful aspect of this function is the ability to write out well labelled kml/kmz files that can be loaded onto phone and opened with maps.me or other applications. To use this function properly it is important that you first familiarize yourself with some of the theory that underlies random sampling and that you learn how "seeds" can be used/set in R to make random sampling reproducible. The function generates random seeds and stores it as a an attribute field of the spatial sample. There is also the option to write the seed to the working directory as text file. Understanding how to use the seeds becomes important if you want to reproduce your results, or if you need to do subsequent rounds of sampling where you want to exclude the previous sample without having to read in the previous samples.
 
 
 To show how the function can be used I will first simulate a spatial data set and sample frame
 
-```{r example}
+```{r example, warning= F , message=F}
 library(butteR)
 library(dplyr)
 library(sf)
@@ -81,23 +81,23 @@ sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame,
 
 ```
 
-The output is stored in a list. Below is the first 6 results of each stratified sample. The results are stratified sample. They can be viewed collectively or one at a time.
+The output is stored in a list of data frames. Each data frame consists of the sample for one strata. Below I have printed the table of  the first 6 results for strata A,B, and C in our example.
 
 ```{r}
-sampler_ouput$results %>% purrr:::map(head) %>% knitr::kable()
+sampler_ouput$results[1:3] %>% purrr:::map(head) %>% knitr::kable()
 
 
 sampler_ouput$results$D %>% head()
 
 ````
   
-The random_seed is saved in the list as well as an attribute of each stratified sample. The random seed is very important for reproducibility which is quite useful for subsequent rounds of data collection
+The random_seed is saved in the list as well as an attribute of each stratified sample. The random seed is very important to be able to reproduce you work. This is particularly useful when you need to perform additional rounds (sometimes unexpected) of sampling for an assessment.
 
 ```{r}
 sampler_ouput$random_seed 
 ```
 
-You can also view all of the remaining points which were not not randomly sampled. You can choose to have these written to a shape file. It is generally a good back up policy to write these as well.
+The output of the stratified sampler object also stores the remaining sample as a separate data frame.  It is often a good idea to write these to a shapefile or csv as back up, especially if you are not 100 % sure how to use the random seeds to reproduce your sampling.
 
 ```{r}
 
@@ -129,7 +129,7 @@ pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
 ```
 
 
-Next I will show two spatial verification functions. The first one just finds the closest distance between points. It uses rTree spatial indexing so it will work quickly on fairly large datasets. 
+Next I will show two spatial verification functions. The first one just finds the closest distance between points. It uses rTree spatial indexing so it will work quickly on fairly large data sets. 
 
 
 
@@ -140,7 +140,7 @@ closest_pts<- butteR::closest_distance_rtree(pt_sf1, pt_sf2)
 closest_pts %>% head() %>% knitr::kable()
 ```
 
-You could easily just filter the "closest_pts" ouput by a distance threshold of your choice. However to make it simpler I have wrapped this function in the function "check_distances_from_target" (I need to come up with a better name for this function). It will return all of the points in from "dataset"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment dat there should obviously be much less.
+You could easily just filter the "closest_pts" output by a distance threshold of your choice. However to make it simpler I have wrapped this function in the function "check_distances_from_target" (I need to come up with a better name for this function). It will return all of the points in from "data set"that are further than the set threshold from any point in the "target_points". It will also show you the distance to the closest target point. Obviously this is fake data so there are a ton of points returned (I will just display the first 6 rows). In your assessment data there should obviously be much less.
 
 
 ```{r}

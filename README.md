@@ -21,7 +21,7 @@ devtools::install_github("zackarno/butteR")
 
 The stratified sampler function can be useful if you want to generate
 random samples from spatial point data. It has been most useful for me
-when I have shelter footparint data that I want to sample. For now, the
+when I have shelter footprint data that I want to sample. For now, the
 function only reads in point data. Therefore, if the footprint data you
 have is polygons it should first be converted to points (centroids).
 
@@ -31,7 +31,7 @@ phone and opened with maps.me or other applications. To use this
 function properly it is important that you first familiarize yourself
 with some of the theory that underlies random sampling and that you
 learn how “seeds” can be used/set in R to make random sampling
-reproducible. The function generates randome seeds and stores it as a an
+reproducible. The function generates random seeds and stores it as a an
 attribute field of the spatial sample. There is also the option to write
 the seed to the working directory as text file. Understanding how to use
 the seeds becomes important if you want to reproduce your results, or if
@@ -44,17 +44,7 @@ data set and sample frame
 ``` r
 library(butteR)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 3.6.1
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(sf)
-#> Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
 lon<-runif(min=88.00863,max=92.68031, n=1000)
 lat<-runif(min=20.59061,max=26.63451, n=1000)
 strata_options<-LETTERS[1:8]
@@ -72,12 +62,12 @@ pt_data %>% head() %>% knitr::kable()
 
 |      lon |      lat | strata |
 | -------: | -------: | :----- |
-| 90.14262 | 26.06148 | D      |
-| 91.21273 | 23.59155 | C      |
-| 90.19238 | 26.24277 | E      |
-| 90.02332 | 25.27046 | H      |
-| 89.53342 | 20.90264 | G      |
-| 88.85128 | 20.98232 | G      |
+| 88.21260 | 25.12462 | F      |
+| 88.38863 | 22.14892 | G      |
+| 91.14093 | 23.49458 | H      |
+| 89.72288 | 22.25252 | G      |
+| 89.90292 | 22.34828 | D      |
+| 89.84144 | 23.05792 | B      |
 
 ``` r
 sample_frame %>% head() %>% knitr::kable()
@@ -85,12 +75,12 @@ sample_frame %>% head() %>% knitr::kable()
 
 | strata | sample\_size |
 | :----- | -----------: |
-| A      |           33 |
-| B      |           69 |
-| C      |           39 |
+| A      |           63 |
+| B      |           58 |
+| C      |           28 |
 | D      |           85 |
-| E      |           30 |
-| F      |           16 |
+| E      |           60 |
+| F      |           45 |
 
 Next we will run the stratified\_sampler function using the two
 simulated data sets as input.
@@ -111,125 +101,82 @@ sampler_ouput<-butteR::stratified_sampler(sample.target.frame = sample_frame,
                             )
 ```
 
-The output is stored in a list. Below is the first 6 results of each
-stratified sample. The results are stratified sample. They can be viewed
-collectively or one at a time.
+The output is stored in a list of data frames. Each data frame consists
+of the sample for one strata. Below I have printed the table of the
+first 6 results for strata A,B, and C in our example.
 
 ``` r
-sampler_ouput$results %>% purrr:::map(head) %>% knitr::kable()
+sampler_ouput$results[1:3] %>% purrr:::map(head) %>% knitr::kable()
 ```
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_A        |    828005 |   27 |
-| 2\_A        |    828005 |   68 |
-| 3\_A        |    828005 |   83 |
-| 4\_A        |    828005 |  100 |
-| 5\_A        |    828005 |  101 |
-| 6\_A        |    828005 |  124 |
+| 1\_A        |    643039 |   17 |
+| 2\_A        |    643039 |   23 |
+| 3\_A        |    643039 |   58 |
+| 4\_A        |    643039 |   69 |
+| 5\_A        |    643039 |   77 |
+| 6\_A        |    643039 |   90 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_B        |    828005 |   10 |
-| 2\_B        |    828005 |   41 |
-| 3\_B        |    828005 |   44 |
-| 4\_B        |    828005 |   62 |
-| 5\_B        |    828005 |   69 |
-| 6\_B        |    828005 |   92 |
+| 1\_B        |    643039 |   28 |
+| 2\_B        |    643039 |   43 |
+| 3\_B        |    643039 |   49 |
+| 4\_B        |    643039 |   84 |
+| 5\_B        |    643039 |   88 |
+| 6\_B        |    643039 |  116 |
 
 | Description | rnd\_seed | uuid |
 | :---------- | --------: | ---: |
-| 1\_C        |    828005 |    2 |
-| 2\_C        |    828005 |   32 |
-| 3\_C        |    828005 |   36 |
-| 4\_C        |    828005 |   45 |
-| 5\_C        |    828005 |  110 |
-| 6\_C        |    828005 |  138 |
-
-| Description | rnd\_seed | uuid |
-| :---------- | --------: | ---: |
-| 1\_D        |    828005 |    1 |
-| 2\_D        |    828005 |   12 |
-| 3\_D        |    828005 |   13 |
-| 4\_D        |    828005 |   17 |
-| 5\_D        |    828005 |   28 |
-| 6\_D        |    828005 |   51 |
-
-| Description | rnd\_seed | uuid |
-| :---------- | --------: | ---: |
-| 1\_E        |    828005 |   33 |
-| 2\_E        |    828005 |   50 |
-| 3\_E        |    828005 |   66 |
-| 4\_E        |    828005 |   87 |
-| 5\_E        |    828005 |  109 |
-| 6\_E        |    828005 |  146 |
-
-| Description | rnd\_seed | uuid |
-| :---------- | --------: | ---: |
-| 1\_F        |    828005 |  135 |
-| 2\_F        |    828005 |  153 |
-| 3\_F        |    828005 |  317 |
-| 4\_F        |    828005 |  381 |
-| 5\_F        |    828005 |  402 |
-| 6\_F        |    828005 |  462 |
-
-| Description | rnd\_seed | uuid |
-| :---------- | --------: | ---: |
-| 1\_G        |    828005 |    5 |
-| 2\_G        |    828005 |    6 |
-| 3\_G        |    828005 |   14 |
-| 4\_G        |    828005 |   19 |
-| 5\_G        |    828005 |   20 |
-| 6\_G        |    828005 |   25 |
-
-| Description | rnd\_seed | uuid |
-| :---------- | --------: | ---: |
-| 1\_H        |    828005 |   23 |
-| 2\_H        |    828005 |   24 |
-| 3\_H        |    828005 |   30 |
-| 4\_H        |    828005 |   49 |
-| 5\_H        |    828005 |   75 |
-| 6\_H        |    828005 |   85 |
+| 1\_C        |    643039 |   12 |
+| 2\_C        |    643039 |   37 |
+| 3\_C        |    643039 |   48 |
+| 4\_C        |    643039 |   81 |
+| 5\_C        |    643039 |  107 |
+| 6\_C        |    643039 |  122 |
 
 ``` r
 
 
 sampler_ouput$results$D %>% head()
 #>   Description rnd_seed uuid
-#> 1         1_D   828005    1
-#> 2         2_D   828005   12
-#> 3         3_D   828005   13
-#> 4         4_D   828005   17
-#> 5         5_D   828005   28
-#> 6         6_D   828005   51
+#> 1         1_D   643039   10
+#> 2         2_D   643039   29
+#> 3         3_D   643039   33
+#> 4         4_D   643039   38
+#> 5         5_D   643039   68
+#> 6         6_D   643039   71
 ```
 
 The random\_seed is saved in the list as well as an attribute of each
-stratified sample. The random seed is very important for reproducibility
-which is quite useful for subsequent rounds of data collection
+stratified sample. The random seed is very important to be able to
+reproduce you work. This is particularly useful when you need to perform
+additional rounds (sometimes unexpected) of sampling for an assessment.
 
 ``` r
 sampler_ouput$random_seed 
-#> [1] 828005
+#> [1] 643039
 ```
 
-You can also view all of the remaining points which were not not
-randomly sampled. You can choose to have these written to a shape file.
-It is generally a good back up policy to write these as well.
+The output of the stratified sampler object also stores the remaining
+sample as a separate data frame. It is often a good idea to write these
+to a shapefile or csv as back up, especially if you are not 100 % sure
+how to use the random seeds to reproduce your sampling.
 
 ``` r
 
 sampler_ouput$samp_remaining %>% head() %>% knitr::kable()
 ```
 
-|    |      lon |      lat | strata | uuid | rnd\_seed |
-| -- | -------: | -------: | :----- | ---: | --------: |
-| 3  | 90.19238 | 26.24277 | E      |    3 |    828005 |
-| 4  | 90.02332 | 25.27046 | H      |    4 |    828005 |
-| 7  | 90.77956 | 25.45381 | E      |    7 |    828005 |
-| 8  | 90.88944 | 22.56836 | G      |    8 |    828005 |
-| 9  | 90.76433 | 21.99042 | A      |    9 |    828005 |
-| 11 | 90.83148 | 25.57179 | E      |   11 |    828005 |
+|   |      lon |      lat | strata | uuid | rnd\_seed |
+| - | -------: | -------: | :----- | ---: | --------: |
+| 2 | 88.38863 | 22.14892 | G      |    2 |    643039 |
+| 4 | 89.72288 | 22.25252 | G      |    4 |    643039 |
+| 5 | 89.90292 | 22.34828 | D      |    5 |    643039 |
+| 6 | 89.84144 | 23.05792 | B      |    6 |    643039 |
+| 8 | 90.72916 | 21.23794 | G      |    8 |    643039 |
+| 9 | 92.38461 | 22.17366 | A      |    9 |    643039 |
 
 ### Example using the check\_distance\_from\_target function
 
@@ -257,7 +204,7 @@ pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
 
 Next I will show two spatial verification functions. The first one just
 finds the closest distance between points. It uses rTree spatial
-indexing so it will work quickly on fairly large datasets.
+indexing so it will work quickly on fairly large data sets.
 
 ``` r
 
@@ -277,15 +224,15 @@ closest_pts %>% head() %>% knitr::kable()
 | 199 | B      | c(91.9385484030803, 22.9929798167442) | A        | c(92.0439420932042, 22.9314622797974) | 12776.161 |
 | 419 | D      | c(88.6396377435045, 22.2862520419468) | C        | c(88.7253538271838, 22.3836231110146) | 13936.767 |
 
-You could easily just filter the “closest\_pts” ouput by a distance
+You could easily just filter the “closest\_pts” output by a distance
 threshold of your choice. However to make it simpler I have wrapped this
 function in the function “check\_distances\_from\_target” (I need to
 come up with a better name for this function). It will return all of the
-points in from “dataset”that are further than the set threshold from any
-point in the “target\_points”. It will also show you the distance to the
-closest target point. Obviously this is fake data so there are a ton of
-points returned (I will just display the first 6 rows). In your
-assessment dat there should obviously be much less.
+points in from “data set”that are further than the set threshold from
+any point in the “target\_points”. It will also show you the distance to
+the closest target point. Obviously this is fake data so there are a ton
+of points returned (I will just display the first 6 rows). In your
+assessment data there should obviously be much less.
 
 ``` r
 
