@@ -16,6 +16,7 @@ implement_cleaning_log <- function(df,
                                    cl_change_type_col,
                                    cl_change_col,
                                    cl_uuid,cl_new_val){
+  cl[[cl_change_type_col]]<-cl[[cl_change_type_col]] %>% tolower()
 
   cl[[cl_change_col]]<-cl[[cl_change_col]] %>% trimws()
   cl[[cl_new_val]]<-cl[[cl_new_val]] %>% trimws()
@@ -88,7 +89,7 @@ check_cleaning_log <- function(df,
   cl[[cl_new_val]]<-cl[[cl_new_val]] %>% trimws()
 
   cl_change_col_prob_df<-cl %>%
-    filter(cl_change_type_col=="change_response") %>%
+    filter(!!sym(cl_change_type_col)=="change_response") %>%
     mutate(cl_prob="question_does_not_exist") %>%
     filter(!!sym(cl_change_col) %in% colnames(df)==FALSE) %>%
     select(cl_prob,everything())

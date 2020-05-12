@@ -9,7 +9,7 @@ auto_detect_select_multiple<-function(df){
   df_names_before_last_period<-data.frame(col_names=df_names_before_last_period[df_names_before_last_period!=""])
   select_multiple_detected<-df_names_before_last_period %>%
     group_by(col_names) %>%
-    count() %>%
+    summarise(n=n()) %>%
     filter(n>1) %>%
     select(col_names)
   return(as.character(select_multiple_detected$col_names))

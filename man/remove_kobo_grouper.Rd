@@ -4,7 +4,7 @@
 \alias{remove_kobo_grouper}
 \title{Remove grouper added to kobo dataset when downloaded}
 \usage{
-remove_kobo_grouper(colname)
+remove_kobo_grouper(colname, max_prefix_length)
 }
 \arguments{
 \item{colname}{colname vector}
