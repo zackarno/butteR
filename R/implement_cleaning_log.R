@@ -21,7 +21,8 @@ implement_cleaning_log <- function(df,
   cl[[cl_change_col]]<-cl[[cl_change_col]] %>% trimws()
   cl[[cl_new_val]]<-cl[[cl_new_val]] %>% trimws()
   cl_change_type_options<- c("change_response",  "remove_survey", "blank_response","no_action")
-  cl_change_response<- cl %>% filter(!!sym(cl_change_type_col) %in% c( cl_change_type_options[1],cl_change_type_options[3]))
+  cl_change_response<- cl %>% filter(!!sym(cl_change_type_col) %in% c( cl_change_type_options[1]))
+  # cl_change_type_options[3]
   cl_remove_survey<- cl %>% filter(!!sym(cl_change_type_col) == cl_change_type_options[2])
   # cl_blank_response<- cl %>% filter(!!sym(cl_change_type_col))
 
