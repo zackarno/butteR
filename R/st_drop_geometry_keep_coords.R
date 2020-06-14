@@ -9,4 +9,5 @@ st_drop_geometry_keep_coords<-function(sf_object){
   df_object<-sf_object %>% st_drop_geometry()
   df_object[,colnames(coords)]<-coords
   df_object<- df_object %>% dplyr::select(colnames(coords), everything())
+  return(df_object)
 }

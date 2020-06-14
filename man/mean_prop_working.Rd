@@ -9,8 +9,9 @@ mean_prop_working(
   list_of_variables,
   aggregation_level = NULL,
   round_to = 2,
-  return_confidence = TRUE,
-  na_replace = FALSE
+  return_confidence = FALSE,
+  na_replace = FALSE,
+  questionnaire = NULL
 )
 }
 \arguments{

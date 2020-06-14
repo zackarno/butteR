@@ -17,21 +17,51 @@
 
 
 mean_prop_working<-function(design,
-                                   list_of_variables,
-                                   aggregation_level=NULL,
-                                   round_to=2,
-                                   return_confidence=TRUE,
-                                   na_replace=FALSE){
-  design_srvy<-as_survey(design)
+              list_of_variables,
+              aggregation_level=NULL,
+              round_to=2,
+              return_confidence=FALSE,
+              na_replace=FALSE,
+              questionnaire=NULL){
+  design_srvy<-srvyr::as_survey(design)
+  if(is.null(questionnaire)==TRUE){
+    select_multiple_in_data<-auto_detect_select_multiple(design$variables)
+  }
+  if(is.null(questionnaire)==FALSE){
+    which_are_select_multiple<-which(
+      sapply(names(design_srvy$variables), questionnaire$question_is_select_multiple))
+    select_multiple_in_data<-names(which_are_select_multiple)}
+
+  select_multiples_in_list_of_variables<-list_of_variables[which(list_of_variables%in%select_multiple_in_data)]
+  if(length(select_multiples_in_list_of_variables)>0){
+    select_multiples_in_data_with_dot<-paste0(select_multiple_in_data,".")
+    select_multiples_in_given_list_with_dot<-paste0(select_multiples_in_list_of_variables, ".")
+    vars_selection_helper <- paste0("^(", paste(select_multiples_in_given_list_with_dot, collapse="|"), ")")
+    # vars_selection_helper <- paste0("^(", paste(select_multiples_in_data_with_dot, collapse="|"), ")")
+    select_multiple_logical_names<-select(design_srvy$variables, matches(vars_selection_helper)) %>%
+      select(-ends_with("_other")) %>% colnames()
+    list_of_variables_no_concatenated_select_multiple<-list_of_variables [which(list_of_variables%in%select_multiple_in_data==FALSE)]
+    list_of_variables<-c(list_of_variables_no_concatenated_select_multiple,select_multiple_logical_names)
+  }
+  if(length(select_multiples_in_list_of_variables)==0){
+    list_of_variables<-list_of_variables
+  }
+  if(is.null(questionnaire)==TRUE){
+    design_srvy$variables<-design_srvy$variables[,colnames(design_srvy$variables) %in% select_multiple_in_data==FALSE]
+    design_srvy$variables<-design_srvy$variables %>%
+      mutate_if(sapply(design_srvy$variables, is.character),as.factor)
+  }
+  if(is.null(questionnaire)==FALSE){
+    design_srvy$variables<-butteR::questionnaire_factorize_categorical(design_srvy$variables,questionnaire = questionnaire,return_full_data = TRUE)
+  }
+
   integer_analysis_tables<-list()
   factor_analysis_tables<-list()
-
+  list_of_variables<-setdiff(list_of_variables,aggregation_level)
   for(i in 1: length(list_of_variables)){
     variable_to_analyze<-list_of_variables[i]
-
     print(variable_to_analyze)
-
-    if(class(design_srvy$variables[[variable_to_analyze]])=="integer"){
+    if(class(design_srvy$variables[[variable_to_analyze]])%in% c("integer", "numeric")){
       if(na_replace==TRUE){
         design_srvy$variables[[variable_to_analyze]]<-ifelse(is.na(design_srvy$variables[[variable_to_analyze]]),
                                                              0,design_srvy$variables[[variable_to_analyze]])
@@ -44,7 +74,6 @@ mean_prop_working<-function(design,
         integers_formatted_for_analysis<-design_srvy %>%
           group_by(!!!aggregate_by,.drop=FALSE)
       }
-
       if(return_confidence==TRUE)
       {
         integer_analysis_tables[[i]]<-integers_formatted_for_analysis %>%
@@ -55,112 +84,110 @@ mean_prop_working<-function(design,
                                                ")")) %>%
           dplyr::select(!!!aggregate_by, variable_to_analyze)
       }
-
       if(return_confidence==FALSE)
       {
-        integer_analysis_tables[[i]]<-integers_formatted_for_analysis %>%
-          summarise(!!variable_to_analyze:=survey_mean(!!sym(variable_to_analyze),na.rm=TRUE,vartype="ci")) %>%
-          select(!!!aggregate_by, !!sym(variable_to_analyze))
-      }
-    }
-
+        if(is.null(aggregation_level)) {
+          integer_analysis_tables[[i]]<-integers_formatted_for_analysis %>%
+            summarise(!!variable_to_analyze:=survey_mean(!!sym(variable_to_analyze),na.rm=TRUE,vartype="ci")) %>%
+            select(!!sym(variable_to_analyze))} else {
+              integer_analysis_tables[[i]]<-integers_formatted_for_analysis %>%
+                summarise(!!variable_to_analyze:=survey_mean(!!sym(variable_to_analyze),na.rm=TRUE,vartype="ci")) %>%
+                select(!!!aggregate_by, !!sym(variable_to_analyze))
+            }
+      }}
     if(class(design_srvy$variables[[variable_to_analyze]])=="factor"){
       if(na_replace==TRUE){
-        design_srvy$variables[[variable_to_analyze]]<-forcats::fct_explicit_na(HH_svy_full$variables[,variable_to_analyze], "filtered_values")
+        design_srvy$variables[[variable_to_analyze]]<-forcats::fct_explicit_na(design_srvy$variables[[variable_to_analyze]], "filtered_values")
       }
-      if(is.null(aggregation_level)){
+      if(is.null(aggregation_level)&return_confidence==TRUE){
         aggregate_by<-syms(variable_to_analyze)
         factors_analyzed<-design_srvy %>%
           group_by(!!!aggregate_by,.drop=FALSE) %>%
           summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci" )) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
           mutate(question.response=paste0(question,".", answer_choice)) %>%
           select(question.response,mean.stat:mean.stat_upp)
-      } else {
+      }
+      if(is.null(aggregation_level)&return_confidence==F){
+        aggregate_by<-syms(variable_to_analyze)
+        factors_analyzed<-design_srvy %>%
+          group_by(!!!aggregate_by,.drop=FALSE) %>%
+          summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci" )) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
+          mutate(question.response=paste0(question,".", answer_choice))
+      }else {
         aggregate_by<-syms(c(aggregation_level,variable_to_analyze))
         factors_analyzed<-design_srvy %>%
           group_by(!!!aggregate_by,.drop=FALSE) %>%
           summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci" )) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
+          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
           mutate(question.response=paste0(question,".", answer_choice)) %>%
           select(!!(aggregation_level), question.response, mean.stat:mean.stat_upp)
       }
-      if(return_confidence==TRUE){
-        factor_analysis_tables[[i]]<-factors_analyzed
-      }
-      if(return_confidence==FALSE){
-        factor_analysis_tables[[i]]<-design_srvy %>%
-          group_by(!!!aggregate_by,!!sym(variable_to_analyze),.drop=FALSE) %>%
-          summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci")) %>%
-          gather("question","answer_choice",variable_to_analyze) %>%
-          mutate(question.response=paste0(question,".", answer_choice))
-      }
+      factor_analysis_tables[[i]]<-factors_analyzed
+
+
     }}
   if(length(integer_analysis_tables)>0){
-  print("binding intergers")
-  interger_analysis_tables_full<- integer_analysis_tables[-which(sapply(integer_analysis_tables, is.null))]
-  integers_analyzed_wide<-Reduce(function(x, y) merge(x, y, by =aggregation_level, all = TRUE), interger_analysis_tables_full)
-  integers_analyzed_wide<-integers_analyzed_wide %>%
-    select_if(~!all(is.na(.))) %>% select(-ends_with(".NA"))}
+    print("binding intergers")
+    integer_analysis_tables_full<-integer_analysis_tables
+    # integer_analysis_tables_full<- Filter(function(x) dim(x)[1] > 0, integer_analysis_tables)#integer_analysis_tables[-which(sapply(integer_analysis_tables, is.null))]
+    integer_analysis_tables_full<-integer_analysis_tables_full[!sapply(integer_analysis_tables_full, is.null)]
+    integers_analyzed_wide<-Reduce(function(x, y) merge(x, y, by =aggregation_level, all = TRUE,sort=FALSE), integer_analysis_tables_full)
+    integers_analyzed_wide<-integers_analyzed_wide %>%
+      select_if(~!all(is.na(.))) %>% select(-ends_with(".NA"))}
   if(length(factor_analysis_tables)>0) {
-  print("binding factors")
-  factors_analyzed_long<-do.call("rbind", factor_analysis_tables)
-  print("spreading factors")
-  if(return_confidence==TRUE){
-    if(is.null(aggregation_level)){
-      factors_analyzed_wide<-factors_analyzed_long %>%
-        mutate(stat_full= paste0(round(mean.stat,round_to),
-                                 " (",round(mean.stat_low,round_to),
-                                 ", ", round(mean.stat_upp,round_to),
-                                 ")")) %>%
-        select(question.response, stat_full) %>% tidyr::spread(question.response,stat_full) %>%
-        select_if(~!all(is.na(.))) %>%
-        select(-ends_with(".NA"))
-    } else {
-      factors_analyzed_wide<-factors_analyzed_long %>%
-        mutate(stat_full= paste0(round(mean.stat,round_to),
-                                 " (",round(mean.stat_low,round_to),
-                                 ", ", round(mean.stat_upp,round_to),
-                                 ")")) %>%
-        select(!!(aggregation_level), question.response, stat_full) %>% tidyr::spread(question.response,stat_full) %>%
-        select_if(~!all(is.na(.))) %>%
-        select(-ends_with(".NA")) %>%
-        filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
+    print("binding factors")
+    factors_analyzed_long<-do.call("rbind", factor_analysis_tables)
+    print("spreading factors")
+    if(return_confidence==TRUE){
+      if(is.null(aggregation_level)){
+        factors_analyzed_wide<-factors_analyzed_long %>%
+          mutate(stat_full= paste0(round(mean.stat,round_to),
+                                   " (",round(mean.stat_low,round_to),
+                                   ", ", round(mean.stat_upp,round_to),
+                                   ")")) %>%
+          select(question.response, stat_full) %>% tidyr::spread(question.response,stat_full) %>%
+          select(factors_analyzed_long$question.response) %>%
+          select_if(~!all(is.na(.))) %>%
+          select(-ends_with(".NA"))
+      } else {
+        factors_analyzed_wide<-factors_analyzed_long %>%
+          mutate(stat_full= paste0(round(mean.stat,round_to),
+                                   " (",round(mean.stat_low,round_to),
+                                   ", ", round(mean.stat_upp,round_to),
+                                   ")")) %>%
+          select(!!(aggregation_level), question.response, stat_full) %>% tidyr::spread(question.response,stat_full) %>%
+          select({aggregation_level},factors_analyzed_long$question.response) %>%
+          select_if(~!all(is.na(.))) %>%
+          select(-ends_with(".NA")) %>%
+          filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
+      }}
+    if(return_confidence==FALSE){
+      if(is.null(aggregation_level)) {
+        factors_analyzed_wide<-factors_analyzed_long %>%
+          select(question.response, mean.stat) %>% tidyr::spread(question.response,mean.stat) %>%
+          select({aggregation_level},factors_analyzed_long$question.response) %>%
+          select_if(~!all(is.na(.)))%>%
+          select(-ends_with(".NA"))
+      } else {
+        factors_analyzed_wide<-factors_analyzed_long %>%
+          select(aggregation_level, question.response, mean.stat) %>% tidyr::spread(question.response,mean.stat) %>%
+          select({aggregation_level},factors_analyzed_long$question.response) %>%
+          select_if(~!all(is.na(.)))%>%
+          select(-ends_with(".NA")) %>%
+          filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
+      }
     }}
+  if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)>0){
+    if (is.null(aggregation_level)) {
+      combined_output<-cbind(factors_analyzed_wide, integers_analyzed_wide)}
+    else{
+      combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}}
+  if(length(integer_analysis_tables)>0 &length(factor_analysis_tables)==0){
+    combined_output<-integers_analyzed_wide}
+  if(length(integer_analysis_tables)==0 &length(factor_analysis_tables)>0){
+    combined_output<-factors_analyzed_wide}
 
-  if(return_confidence==FALSE){
-    if(is.null(aggregation_level)) {
-      factors_analyzed_wide<-factors_analyzed_long %>%
-        select(question.response, mean.stat) %>% tidyr::spread(question.response,mean.stat) %>%
-        select_if(~!all(is.na(.)))%>%
-        select(-ends_with(".NA"))
-    } else {
-      factors_analyzed_wide<-factors_analyzed_long %>%
-        select(aggregation_level, question.response, mean.stat) %>% tidyr::spread(question.response,mean.stat) %>%
-        select_if(~!all(is.na(.)))%>%
-        select(-ends_with(".NA")) %>%
-        filter(!is.na(!!sym(aggregation_level[length(aggregation_level)])))
-    }
-  }}
-  if (is.null(aggregation_level)) {
-    if(length(factor_analysis_tables)>0 &length(integer_analysis_tables)>0 ){
-    combined_output<-cbind(factors_analyzed_wide, integers_analyzed_wide)}
-    if(length(factor_analysis_tables)>0 & length(integer_analysis_tables)==0) {
-      factors_analyzed_wide
-    }
-    if(length(factor_analysis_tables)==0 &length(integer_analysis_tables)>0) {
-      integers_analyzed_wide
-    }
-
-  } else{
-    if(length(factor_analysis_tables)>0 &length(integer_analysis_tables)>0 ){
-      combined_output<-left_join(factors_analyzed_wide, integers_analyzed_wide, by=aggregation_level)}
-
-    if(length(factor_analysis_tables)>0 & length(integer_analysis_tables)==0)  {
-      return(factors_analyzed_wide)
-    }
-    if(length(factor_analysis_tables)==0 & length(integer_analysis_tables)>0){
-      integers_analyzed_wide
-  }
-  }
+  return(combined_output)
 }
