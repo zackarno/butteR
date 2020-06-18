@@ -17,7 +17,9 @@ check_reported_strata_against_spatial_poly<- function(dataset,
                                                       dataset_strata_name,
                                                       poly_strata_name,
                                                       cols_to_report=c("X_uuid","enumerator_id")){
-
+ dataset[[dataset_strata_name]]<-tolower(dataset[[dataset_strata_name]])
+ strata_poly[[poly_strata_name]]<-tolower(strata_poly[[poly_strata_name]])
+ 
   dataset_sf<-sf::st_as_sf(dataset,coords= dataset_coordinates, crs=4326)
   data_poly_joined<-sf::st_join(dataset_sf, strata_poly)
   strata_that_dont_match_spatial_poly<-data_poly_joined %>%
