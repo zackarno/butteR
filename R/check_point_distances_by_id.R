@@ -5,8 +5,8 @@
 #' @param sf2_id sf2_id that links to sf_1
 #' @param dist_threshold distance threshold to check
 #' @return 1.) dataset with distance column mutated, 2.) a leaflet map, 3.) histogram of distances
+#' @import dplyr tidyr leaflet ggplot2 sf
 #' @export
-
 
 
 check_point_distance_by_id<- function(sf1, sf2, sf1_id, sf2_id, dist_threshold){
@@ -30,9 +30,9 @@ check_point_distance_by_id<- function(sf1, sf2, sf1_id, sf2_id, dist_threshold){
     gather(start_end, coords, start, end) %>%
     separate(coords, c("LONG", "LAT"), sep = "_") %>%
     mutate_at(vars(LONG, LAT), as.numeric) %>%
-    st_as_sf(coords = c("LONG", "LAT")) %>%
+    st_as_sf(coords = c("LONG", "LAT"),na.fail=FALSE) %>%
     group_by(!!sym(sf1_id)) %>%
-    summarise(id=unique(!!sym(sf1_id)))
+    summarise(ids=unique(!!sym(sf1_id)))
 
   sf_lines<-sf_joined_gathered %>%
     filter(st_geometry_type(sf_joined_gathered)!="POINT") %>%
@@ -56,6 +56,7 @@ check_point_distance_by_id<- function(sf1, sf2, sf1_id, sf2_id, dist_threshold){
   outputs$map<- leaflet::leaflet(sf_lines) %>%
     addTiles() %>%
     addPolylines(color=~color_line, label=~popup_text)
+
   outputs$hist<- ggplot2::ggplot(sf_lines,aes(x=dist_m))+geom_histogram()
 
   outputs$dataset<-sf_lines
@@ -63,30 +64,3 @@ check_point_distance_by_id<- function(sf1, sf2, sf1_id, sf2_id, dist_threshold){
 
 }
 
-
-
-# set.seed(799)
-# lon1<-runif(min=88.00863,max=92.68031, n=1000)
-# lat1<-runif(min=20.59061,max=26.63451, n=1000)
-# lon2<-runif(min=88.00863,max=92.68031, n=1000)
-# lat2<-runif(min=20.59061,max=26.63451, n=1000)
-# strata_options<-LETTERS[1:8]
-#
-# #make a simulated dataset
-# pt_data1<-data.frame(lon=lon1, lat=lat1, strata=sample(strata_options,1000, replace=TRUE))
-# pt_data2<-data.frame(lon=lon2, lat=lat2, strata=sample(strata_options,1000, replace=TRUE))
-#
-# pt_data1<- pt_data1 %>% mutate(uuid=1:nrow(.))
-# pt_data2<- pt_data2 %>%  mutate(uuid=rev(pt_data1$uuid))
-#
-# # convert to simple feature object
-# coords<- c("lon", "lat")
-# pt_sf1<- sf::st_as_sf(x = pt_data1, coords=coords, crs=4326)
-# pt_sf2<- sf::st_as_sf(x = pt_data2, coords=coords, crs=4326)
-# pt_sf1$uuid
-# pt_sf2$uuid
-# debugonce(check_distances)
-# asdf<-check_distances(pt_sf1,pt_sf2 ,sf1_id="uuid",sf2_id = "uuid", dist_threshold = 50000)
-# asdf$map
-# asdf$dataset
-# asdf$hist

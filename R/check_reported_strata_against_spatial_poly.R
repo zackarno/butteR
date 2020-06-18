@@ -7,18 +7,8 @@
 #' @param poly_strata_name column which hold the strata in the polygon file
 #' @param cols_to_report columns which you want to report along with mismatched strata. default is c("X_uuid","enumerator_id")
 
-
 #' @return dataframe where strata reported in dataset do not match strata in spatial admin file according to  coordinates in data set
 #' @export
-
-#' @importFrom sf st_join
-
-
-
-
-
-
-
 
 
 check_reported_strata_against_spatial_poly<- function(dataset,

@@ -5,21 +5,18 @@
 \title{check distance from target}
 \usage{
 check_distances_from_target(
-  dataset,
+  dataset_sf,
   target_points,
-  dataset_coordinates,
   cols_to_report,
   distance_threshold = 25
 )
 }
 \arguments{
-\item{dataset}{dataset}
-
-\item{target_points}{spatial points to check data set agains}
-
-\item{dataset_coordinates}{column names for coordinates in dataset}
+\item{target_points}{spatial points to check dataset agains}
 
 \item{cols_to_report}{which columns you want to return with distnace}
+
+\item{dataset}{an sf dataset}
 }
 \value{
 simplified dataset with distance to closest target point
