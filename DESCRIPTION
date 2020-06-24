@@ -17,4 +17,5 @@ Imports:
     srvyr,
     forcats,
     tidyr,
-    sf
+    sf,
+	leaflet
