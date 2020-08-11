@@ -1,9 +1,9 @@
-#' Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set
+#' Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set. Only columns with the same names can be compared
 #' @param raw_data raw/unchanged data set (df1)
 #' @param clean_data clean/changed data set (df2)
 #' @param raw_data_uuid name of unique identifier column in df1 that matches values of unique identifier in df2
 #' @param clean_data_uuid name of unique identifier column in df2 that matches values of unique identifier in df1
-#' @return a comparison/cleaning log that shows all changes that were made from teh raw data set
+#' @return a comparison/cleaning log that shows all changes that were made from the raw data set
 #' @import dplyr purrr
 #' @export
 #'
