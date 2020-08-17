@@ -18,8 +18,8 @@ df_comparison_log<-function(raw_data,clean_data,raw_data_uuid,clean_data_uuid){
 
   raw_data<- raw_data %>%
     filter(!!sym(raw_data_uuid) %in% clean_data[[clean_data_uuid]]) %>%
-    arrange(raw_data_uuid)
-  clean_data<-clean_data %>% arrange(clean_data_uuid)
+    arrange(!!sym(raw_data_uuid))
+  clean_data<-clean_data %>% arrange(!!sym(clean_data_uuid))
 
   cl_list<-map2(raw_data, clean_data,
                 function(x,y){
