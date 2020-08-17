@@ -38,7 +38,7 @@ df_comparison_log<-function(raw_data,clean_data,raw_data_uuid,clean_data_uuid){
                                                        column_changed=y) %>%
                                                 select(uuid,change_type,column_changed,everything()))
 
-  cl_list_filtered$deleted_records<- deleted_records %>% rename(!!(raw_data_uuid):="uuid")
+  cl_list_filtered$deleted_records<- deleted_records %>% rename(uuid =raw_data_uuid)
   cl_list_full<- cl_list_filtered%>% keep(~nrow(.)>0)
   bind_rows(cl_list_full)
 
