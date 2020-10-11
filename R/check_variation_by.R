@@ -95,7 +95,7 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
 
 
 
-outliers_by_to_cleaning_log_template<-function(outliers_by=low_outliers, by= by){
+outliers_by_to_cleaning_log_template<-function(df=df_orig,outliers_by=low_outliers, by= by){
   low_outliers_list<-outliers_by %>%
     split(.[[by]])
   cleaning_log_list<-list()

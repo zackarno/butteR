@@ -4,9 +4,15 @@
 \alias{outliers_by_to_cleaning_log_template}
 \title{outliers_by_to_cleaning_log_template}
 \usage{
-outliers_by_to_cleaning_log_template(outliers_by = low_outliers, by = by)
+outliers_by_to_cleaning_log_template(
+  df_orig = df_orig,
+  outliers_by = low_outliers,
+  by = by
+)
 }
 \arguments{
+\item{df_orig}{Original data frame - this should have uuids}
+
 \item{outliers_by}{data frame indicating outliers grouped by chosen var}
 
 \item{by}{What you want to check by (designed specifically with enumerator in mind)}
