@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_comparison_log.R
 \name{df_comparison_log}
 \alias{df_comparison_log}
-\title{Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set}
+\title{Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set. Only columns with the same names can be compared}
 \usage{
 df_comparison_log(raw_data, clean_data, raw_data_uuid, clean_data_uuid)
 }
@@ -16,8 +16,8 @@ df_comparison_log(raw_data, clean_data, raw_data_uuid, clean_data_uuid)
 \item{clean_data_uuid}{name of unique identifier column in df2 that matches values of unique identifier in df1}
 }
 \value{
-a comparison/cleaning log that shows all changes that were made from teh raw data set
+a comparison/cleaning log that shows all changes that were made from the raw data set
 }
 \description{
-Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set
+Generate comparison/cleaning log between a raw/unchanged data set and a modified/cleaned data set. Only columns with the same names can be compared
 }
