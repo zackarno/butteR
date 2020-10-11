@@ -9,6 +9,7 @@
 
 
 check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
+  options(dplyr.summarise.inform = FALSE)
   output_list<-list()
   by<-rlang::arg_match(by)
 
@@ -29,7 +30,7 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
 
 
   enum_n_distinct<-df %>%
-    group_by(.data[[by]],.groups="drops") %>%
+    group_by(.data[[by]]) %>%
     summarise(across(everything(),n_distinct))
 
   enum_n_distinct_long<-enum_n_distinct %>%
@@ -78,4 +79,5 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
 
   output_list$plot<- plot_output
   output_list$table<- low_outliers_summary
+  return(output_list)
 }
