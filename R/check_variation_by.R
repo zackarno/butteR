@@ -64,6 +64,8 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
     filter(issue !="not outlier")
   low_outliers<-outlier_table %>%
     filter(issue=="low outlier")
+
+  cleaning_log<-outliers_by_to_cleaning_log_template(outliers_by = low_outliers,by = by)
   low_outliers_summary<-low_outliers %>% count(!!sym(by)) %>% arrange(desc(n)) %>%
     mutate(cum_percent= cumsum(n)/sum(n))
   top3_percent<-low_outliers_summary %>% slice(3) %>% pull(cum_percent) %>% round(2)*100
@@ -79,5 +81,41 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
 
   output_list$plot<- plot_output
   output_list$table<- low_outliers_summary
+  output_list$cleaning_log<- cleaning_log
+
   return(output_list)
 }
+
+
+#' outliers_by_to_cleaning_log_template
+#' @param outliers_by data frame indicating outliers grouped by chosen var
+#' @param by What you want to check by (designed specifically with enumerator in mind)
+#' @return cleaning log template
+
+
+
+
+outliers_by_to_cleaning_log_template<-function(outliers_by=low_outliers, by= by){
+  low_outliers_list<-outliers_by %>%
+    split(.[[by]])
+  cleaning_log_list<-list()
+  for(i in 1:length(low_outliers_list)) {
+    outliers_df_temp<-low_outliers_list[[i]]
+    unique_by<-unique(outliers_df_temp[[by]])
+    cleaning_log_list[[unique_by]]<-df_orig %>%
+      filter(!!sym(by)==unique_by) %>%
+      select(X_uuid,by,outliers_df_temp$name) %>%
+      pivot_longer(-c(X_uuid,by),names_to="question_name",
+                   values_to="question_val",
+                   values_transform = list(question_val = as.character)
+      ) %>%
+      arrange(question_name) %>%
+      left_join(outliers_df_temp %>% select(name,issue=n_dist), by=c("question_name"="name")) %>%
+      mutate(issue=glue::glue("{by}: {unique(.data[[by]])} answered this question in only {issue} distinct ways for all interviews"))
+
+  }
+  cleaning_log<-bind_rows(cleaning_log_list )
+}
+
+
+
