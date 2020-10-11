@@ -13,14 +13,14 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
   output_list<-list()
   by<-rlang::arg_match(by)
 
-  crayon::green(cat("removing columns that only have one unique column value"))
+  cat(crayon::green("removing columns that only have one unique column value"))
   cols_to_assess<- df %>%
     summarise(across(everything(),n_distinct)) %>%
     pivot_longer(everything()) %>%
     filter(value!=1) %>%
     pull(name)
 
-  crayon::green(cat("removing records where enumerator has less than 5 valid entries"))
+  cat(crayon::green("removing records where enumerator has less than 5 valid entries"))
   enum_survey_count<- df %>%
     count(.data[[by]]) %>%
     filter(n>5)
@@ -70,7 +70,7 @@ check_variation_by<-function(df, by="enumerator_id",zscore_threshold=3){
     mutate(cum_percent= cumsum(n)/sum(n))
   top3_percent<-low_outliers_summary %>% slice(3) %>% pull(cum_percent) %>% round(2)*100
 
-  crayon::green(cat(glue::glue("appoximately {top3_percent} percent of issues are cause by 3 individuals")))
+  cat(crayon::green(glue::glue("appoximately {top3_percent} percent of issues are cause by 3 individuals")))
   plot_output<-low_outliers %>%
     count(.data[[by]]) %>%
     ggplot(aes(x=reorder(.data[[by]],-n),n))+geom_bar(stat="identity")+
