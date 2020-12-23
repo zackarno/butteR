@@ -47,3 +47,26 @@ refactor_to_xlsform<-function(data,kobo_survey,kobo_choices ,label_column = "lab
   return(data)
 
 }
+
+#' lookup table to data validation
+#' @param lookup_table output form xlsform_lookuptalbe
+#' @return data frame that can be added as xlsx sheet to easily make data validation for kobo tool/cleaning log
+
+
+
+lookup_to_data_validation<-function(lookup_table){
+  return_list<-list()
+  dv_list<-lookup %>%
+    mutate(qtype= ifelse(str_detect(question_type,"select_one|select one"),"so","sm")) %>%
+    select(question_type,qtype,xml_format_data_col,choice_name) %>%
+    split(.$qtype)
+  sm_dv<-dv_list$sm %>%
+    mutate(true="TRUE", false="FALSE") %>%
+    select(-choice_name) %>%
+    pivot_longer(true:false, values_to="choice_name") %>%
+    select(-name)
+  so_dv<- dv_list$so
+  bind_rows(sm_dv,so_dv)
+
+
+}
