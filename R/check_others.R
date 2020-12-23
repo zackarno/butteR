@@ -7,10 +7,10 @@
 
 check_others<- function(df, suffix="_other", report_cols){
 
-  rep_cols_not_in_df<-report_cols[!report_cols %in% colnames(df)] %>% paste(collapse = ", ")
-  message(crayon::magenta(glue::glue("{rep_cols_not_in_df} are not in data frame")))
+  rep_cols_not_in_df<-report_cols[!report_cols %in% colnames(df)]
+  message(crayon::magenta(glue::glue("{rep_cols_not_in_df}%>% paste(collapse = ", ") are not in data frame")))
 
-  user_uuid<-grep(x = rep_cols_not_in_df,pattern = "uuid", value=T)
+  user_uuid<-grep(x = report_cols,pattern = "uuid", value=T)
   if(length(user_uuid>0)){
     data_uuid<-df %>% select(contains("uuid")) %>% colnames()
     message(crayon::blue(glue::glue("did you mean {data_uuid} as the uuid column?")))
@@ -18,7 +18,7 @@ check_others<- function(df, suffix="_other", report_cols){
   assertthat::assert_that(length(rep_cols_not_in_df)==0,msg= "reporting cols listed above not in data frame")
 
 
-  rep_cols_not_in_df %>% select(contains("uuid"))
+  # rep_cols_not_in_df %>% select(contains("uuid"))
   uuid_col<- df %>% select(matches("uuid")) %>% colnames()
 
   df %>%
@@ -29,4 +29,3 @@ check_others<- function(df, suffix="_other", report_cols){
     pivot_longer(-uuid_col) %>%
     filter(!is.na(value))
 }
-
