@@ -9,7 +9,7 @@ check_others(df, suffix = "_other", report_cols)
 \arguments{
 \item{df}{data frame}
 
-\item{suffix}{suffx that ends other columns (prefere kobos to be built with _other suffix)}
+\item{suffix}{suffix that ends other columns. others need systematic suffix (i.e "_other")}
 
 \item{report_cols}{columns to report}
 }

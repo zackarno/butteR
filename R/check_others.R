@@ -1,6 +1,6 @@
 #' Check variation by: check the variation of all columns by grouping var (specifically designed for the grouping var to be the data collectors identifier). Variation results are checked with resepect to standard deviations of them mean and a plot is produced to help understand issues.
 #' @param df data frame
-#' @param suffix suffx that ends other columns (prefere kobos to be built with _other suffix)
+#' @param suffix suffix that ends other columns. others need systematic suffix (i.e "_other")
 #' @param report_cols columns to report
 #' @return a useful table of other values and a cleaning log
 #' @export
