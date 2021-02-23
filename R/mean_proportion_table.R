@@ -115,11 +115,8 @@ mean_proportion_table<-function(design,
         factor_analysis_tables[[i]]<-factors_analyzed
       }
       if(return_confidence==FALSE){
-        factor_analysis_tables[[i]]<-design_srvy %>%
-          group_by(!!!aggregate_by,!!sym(variable_to_analyze),.drop=FALSE) %>%
-          summarise(mean.stat=survey_mean(na.rm=TRUE,vartype="ci")) %>%
-          tidyr::gather("question","answer_choice",variable_to_analyze) %>%
-          mutate(question.response=paste0(question,".", answer_choice))
+        factor_analysis_tables[[i]]<-factors_analyzed%>%
+          select(-mean.stat_low, mean.stat_upp)
       }
     }}
   if(length(integer_analysis_tables)>0){
