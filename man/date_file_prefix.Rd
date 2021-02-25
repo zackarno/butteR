@@ -4,10 +4,10 @@
 \alias{date_file_prefix}
 \title{Use date string to prefix file names}
 \usage{
-date_file_prefix(date = Sys.Date())
+date_file_prefix(days_from_present = 0)
 }
 \arguments{
-\item{date}{date object (default = Sys.Date())}
+\item{days_from_present}{number of days from present. Default is today 0. Tomorrow would be 1, yesterday= -1}
 }
 \value{
 date formated ISO86031 no space
