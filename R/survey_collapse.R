@@ -109,22 +109,27 @@ survey_collapse_categorical_long<- function(df, x,disag=NULL,na_val=NA_character
 
   df<-df %>%
     group_by(!!!group_by_vars,.drop=F)
+  ?pivot_longer
+
   res<-df %>%
     summarise(`mean/pct`=survey_mean(na.rm=TRUE,vartype="ci")) %>%
     mutate(variable=x) %>%
-    rename(variable_value=x) %>%
-    select(any_of(c("variable","variable_value", disag)), everything())
+    rename(variable_value=x)
 
   if(!is.null(disag)){
-    res<-res %>%
-      rename(subset_name=3,
-             subset_value=4) %>%
-      mutate(subset_value=as.character(subset_value))
-
-
-  }
-  return(res)
-
+    # res<-res %>%
+    #   rename(subset_name=3,
+    #          subset_value=4) %>%
+    #   mutate(subset_value=as.character(subset_value))
+   res<-res %>%
+      pivot_longer(c(disag), names_to= "subset_name",
+                   values_to="subset_value")
+   }
+  res %>%
+    select(any_of(c ("variable",
+                     "variable_value",
+                     "subset_name",
+                     "subset_value")),everything())
 }
 
 #' @name survey_collapse
