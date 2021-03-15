@@ -25,9 +25,9 @@ survey_collapse_binary_long<- function(df,
                                        disag=NULL,
                                        na_val=NA_real_,
                                        sm_sep="/" ) {
-  if(is.na(na_val)){
-    df<- df %>%
-      filter(!is.na(x))
+  if(!is.na(na_val) & all(!is.na(df[[x]]))){
+    df<-df%>%
+      filter(!is.na(!!sym(x)))
   }
   if(!is.na(na_val)){
     df %>%
@@ -38,30 +38,63 @@ survey_collapse_binary_long<- function(df,
   if(!is.null(disag)){
     disag_syms<-syms(disag)
     df<-df %>%
-      group_by(!!!disag_syms,.drop=F)
+      group_by(!!!disag_syms)
+    df_n<-df %>%
+      group_by(!!!disag_syms,!!x:=factor(!!sym(x)),.drop=FALSE)
   }
+  if(is.null(disag)){
+    df_n<-df %>%
+      group_by(!!sym(x),.drop=F)
+    subset_names<- "dummy"
+    subset_vals<- "dummy"
+  }
+  vec_n<-df_n %>%
+    summarise(n_unweighted= unweighted(n())) %>%
+    filter(!!sym(x)==T) %>%
+      pull(n_unweighted)
+  vec_n<-ifelse(length(vec_n)==0,0,vec_n)
+
 
   res<-df %>%
-    summarise(`mean/pct`=survey_mean(!!sym(x),na.rm=TRUE,vartype="ci")) %>%
-    mutate(variable_value=x)
+    summarise(
+      `mean/pct`=survey_mean(!!sym(x),na.rm=TRUE,vartype="ci"),
+      ) %>%
+    mutate(variable_val=x) %>%
+    cbind(n_unweighted=vec_n)
+
 
   if(!is.null(disag)){
     class(disag)
-    res<-res %>%
-      pivot_longer(disag,
-                   names_to="subset_name",
-                   values_to= "subset_value") %>%
-      mutate(subset_value=as.character(subset_value))
+    subset_names<- glue::glue("subset_{1:length(disag)}_name")
+    subset_vals<- glue::glue("subset_{1:length(disag)}_val")
+    # res<-
+    res<-  res %>%
+      rename_at(.vars = disag,
+                .funs = function(x) glue::glue("subset_{1:length(x)}_val")) %>%
+      mutate_key_pair(names =subset_names,values = disag ) %>%
+      mutate_at(
+        .vars = subset_vals,.funs = function(x)as.character(x)
+      )
+    # res<-res %>%
+    #   pivot_longer(disag,
+    #                names_to="subset_name",
+    #                values_to= "subset_value") %>%
+    #   mutate(subset_value=as.character(subset_value))
 
 
   }
   res %>%
     mutate(variable=sub(glue::glue('.[^\\{sm_sep}]*$'), '',
-                        variable_value)) %>%
-    dplyr::select(any_of(
-      c("variable","variable_value","subset_name", "subset_value")
-    ),
-    everything())
+                        variable_val)) %>%
+    select(any_of(c ("variable",
+                     "variable_val",
+                     as.character(subset_names),
+                     as.character(subset_vals))),
+                  everything())
+    # dplyr::select(any_of(
+    #   c("variable","variable_value","subset_name", "subset_value")
+    # ),
+    # everything())
 
 
 }
@@ -92,7 +125,7 @@ survey_collapse_binary_long<- function(df,
 survey_collapse_categorical_long<- function(df, x,disag=NULL,na_val=NA_character_) {
   if(is.na(na_val)){
     df<- df %>%
-      filter(!is.na(x))
+      filter(!is.na(!!sym(x)))
   }
   if(!is.na(na_val)){
     df %>%
@@ -102,34 +135,41 @@ survey_collapse_categorical_long<- function(df, x,disag=NULL,na_val=NA_character
   }
 
   if(!is.null(disag)){
-    group_by_vars<-syms(c(x,disag))
+    group_by_vars<-syms(c(disag,x))
   }else{
     group_by_vars<-syms(c(x))
   }
 
   df<-df %>%
     group_by(!!!group_by_vars,.drop=F)
-  ?pivot_longer
-
   res<-df %>%
-    summarise(`mean/pct`=survey_mean(na.rm=TRUE,vartype="ci")) %>%
+    summarise(
+      `mean/pct`=survey_mean(na.rm=TRUE,vartype="ci"),
+      n_unweighted= unweighted(n())
+    ) %>%
     mutate(variable=x) %>%
-    rename(variable_value=x)
+    rename(variable_val=x)
+
+
 
   if(!is.null(disag)){
-    # res<-res %>%
-    #   rename(subset_name=3,
-    #          subset_value=4) %>%
-    #   mutate(subset_value=as.character(subset_value))
-   res<-res %>%
-      pivot_longer(c(disag), names_to= "subset_name",
-                   values_to="subset_value")
+    subset_names<- glue::glue("subset_{1:length(disag)}_name")
+    subset_vals<- glue::glue("subset_{1:length(disag)}_val")
+    res<- res %>%
+      rename_at(.vars = disag,
+                .funs = function(x) glue::glue("subset_{1:length(x)}_val")) %>%
+      mutate_key_pair(names =subset_names,values = disag ) %>%
+      mutate_at(
+        .vars = subset_vals,.funs = function(x)as.character(x)
+      )
+
+
    }
   res %>%
     select(any_of(c ("variable",
-                     "variable_value",
-                     "subset_name",
-                     "subset_value")),everything())
+                     "variable_val",
+                     "subset_names", "subset_vals")),
+           everything())
 }
 
 #' @name survey_collapse
@@ -189,4 +229,21 @@ survey_collapse<-function(df,
 }
 
 
+#' @name mutate_key_pair
+#' @rdname mutate_key_pair
+#' @title Mutate columns on based on a list of names and values
+#'
+#' @description conditionally mutate on columns based
+#' on a list of column names and values. This is mostly useful for conditional
+#' mutate commands and can currently only mutate uniform columns.
+#' It is used inside the survey collapse functions
+#'
+#' @param df dataframe
+#' @param names names of columns to mutate
+#' @param values uniform values to mutate
 
+
+mutate_key_pair<- function(df, names, values){
+  df %>%
+    tibble::add_column(!!!set_names(as.list(values),nm=names))
+}

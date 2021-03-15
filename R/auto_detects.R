@@ -41,7 +41,7 @@ auto_sm_parent_child<- function(df, sm_sep="/"){
     select(starts_with(glue::glue("{sm_parents}{sm_sep}"))) %>%
     colnames()
   tibble(
-    sm_parent=sub(glue::glue('.[^\\{sm_sep}]*$'),'',sm_children),
+    sm_parent=sub(glue::glue('.[^\\{sm_sep}]*$'),'',sm_child),
     sm_child
   )
 
