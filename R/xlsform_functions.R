@@ -120,28 +120,28 @@ survey_name_choice_name_match<- function(kobold){
 #' @param new_choices new choice sheet containing question name and new choices
 
 
-xlsform_add_choices<- function(kobold, new_choices)
+xlsform_add_choices<- function(kobold, new_choices){
   name_list_name<-survey_name_choice_name_match(kobold)
-lookup_table<- new_choices %>%
-  left_join(name_list_name, by = c("variable"="name"))
+  lookup_table<- new_choices %>%
+    left_join(name_list_name, by = c("variable"="name"))
 
-lookup_table_split<- lookup_table %>%
-  select(list_name,choice) %>%
-  mutate(label=choice) %>%
-  split(.$list_name)
-choices_split<-kobold$choices %>%
-  split(.$list_name)
-choices_relevant_split<- choices_split %>%
-  keep(names(.) %in% lookup_table$list_name)
+  lookup_table_split<- lookup_table %>%
+    select(list_name,choice) %>%
+    mutate(label=choice) %>%
+    split(.$list_name)
+  choices_split<-kobold$choices %>%
+    split(.$list_name)
+  choices_relevant_split<- choices_split %>%
+    keep(names(.) %in% lookup_table$list_name)
 
-choices_new_list<-list()
-for(i in names(choices_relevant_split)){
-  choices_temp<-choices_relevant_split[i]
-  lookup_temp<- lookup_table_split[i]
-  choices_new_list[i]<-bind_rows(choices_temp,lookup_temp)
-}
-choices_relevant_split[names(choices_new_list)]<-choices_new_list
-bind_rows(choices_relevant_split)
+  choices_new_list<-list()
+  for(i in names(choices_relevant_split)){
+    choices_temp<-choices_relevant_split[i]
+    lookup_temp<- lookup_table_split[i]
+    choices_new_list[i]<-bind_rows(choices_temp,lookup_temp)
+  }
+  choices_relevant_split[names(choices_new_list)]<-choices_new_list
+  bind_rows(choices_relevant_split)
 }
 
 
