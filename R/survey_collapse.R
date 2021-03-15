@@ -52,7 +52,9 @@ survey_collapse_binary_long<- function(df,
     summarise(n_unweighted= unweighted(n())) %>%
     filter(!!sym(x)==T) %>%
       pull(n_unweighted)
-  vec_n<-ifelse(length(vec_n)==0,0,vec_n)
+  if(length(vec_n)==0){
+    vec_n<-0
+  }
 
 
   res<-df %>%
