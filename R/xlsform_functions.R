@@ -123,7 +123,8 @@ survey_name_choice_name_match<- function(kobold){
 xlsform_add_choices<- function(kobold, new_choices){
   name_list_name<-survey_name_choice_name_match(kobold)
   lookup_table<- new_choices %>%
-    left_join(name_list_name, by = c("variable"="name"))
+    left_join(name_list_name, by = c("name"="name"))
+
 
   lookup_table_split<- lookup_table %>%
     select(list_name,choice) %>%
@@ -140,8 +141,8 @@ xlsform_add_choices<- function(kobold, new_choices){
     lookup_temp<- lookup_table_split[i]
     choices_new_list[i]<-bind_rows(choices_temp,lookup_temp)
   }
-  choices_relevant_split[names(choices_new_list)]<-choices_new_list
-  bind_rows(choices_relevant_split)
+  choices_split[names(choices_relevant_split)]<-choices_new_list
+  bind_rows(choices_split)
 }
 
 
