@@ -17,6 +17,7 @@ pct_change<- function(x){(x/lag(x)-1)*100}
 #' @param time_id column name containing the time_id (i.e month, year, etc.)
 #' @return data.frame with grouping var and all the same columns but half the number of rows
 #' containing the % change for each value.
+#' @export
 
 
 pct_change_by_groups_all_numerics<-function(df, group_var, time_id){
