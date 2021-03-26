@@ -24,9 +24,9 @@ pct_change_by_groups_all_numerics<-function(df, group_var, time_id){
   group_var<- enquo(group_var)
   time_id<- enquo(time_id)
   df %>%
-    group_by(!!aggregation_level ) %>%
-    arrange(!!aggregation_level, !!time_id) %>%
+    group_by(!!group_var ) %>%
+    arrange(!!group_var, !!time_id) %>%
     summarise(across(is.numeric,pct_change)) %>%
     filter(!is.na(!!time_id)) %>%
-    select(-time_id)
+    select(-!!time_id)
 }
