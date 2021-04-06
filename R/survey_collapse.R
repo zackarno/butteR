@@ -216,7 +216,7 @@ survey_collapse<-function(df,
                                                         na_val = NA_character_
       )
     }
-    if(is.logical(df$variables[[i]])){
+    if(is.logical(df$variables[[i]])|is.numeric(df$variables[[i]])){
       res_list[[i]]  <-survey_collapse_binary_long(df = df,
                                                    x = i,
                                                    disag = disag,
