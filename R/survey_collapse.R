@@ -25,12 +25,12 @@ survey_collapse_binary_long<- function(df,
                                        disag=NULL,
                                        na_val=NA_real_,
                                        sm_sep="/" ) {
-  if(!is.na(na_val) & all(!is.na(df[[x]]))){
+  if(is.na(na_val) & !all(!is.na(df$variables[[x]]))){
     df<-df%>%
       filter(!is.na(!!sym(x)))
   }
   if(!is.na(na_val)){
-    df %>%
+    df<-df %>%
       mutate(
         !!x:=ifelse(is.na(x), na_val,x)
       )
@@ -39,19 +39,43 @@ survey_collapse_binary_long<- function(df,
     disag_syms<-syms(disag)
     df<-df %>%
       group_by(!!!disag_syms)
-    df_n<-df %>%
-      group_by(!!!disag_syms,!!x:=factor(!!sym(x)),.drop=FALSE)
+    df_n<-df
+
+    if(is.logical(df$variables[[x]])) {
+      df_n<-df %>%
+        group_by(!!!disag_syms,!!x:=factor(!!sym(x)),.drop=FALSE)
+      vec_n<-df_n %>%
+        summarise(n_unweighted= unweighted(n())) %>%
+        filter(!!sym(x)==T) %>%
+        pull(n_unweighted)
+    }
+    if(!is.logical(df$variables[[x]])) {
+      df_n<-df %>%
+        group_by(!!!disag_syms,.drop=FALSE)
+      vec_n<-df_n %>%
+        summarise(n_unweighted= unweighted(n())) %>%
+        pull(n_unweighted)
+
+
+    }
   }
   if(is.null(disag)){
-    df_n<-df %>%
-      group_by(!!sym(x),.drop=F)
-    subset_names<- "dummy"
-    subset_vals<- "dummy"
+    if(is.logical(df$variables[[x]])) {
+      df_n<-df %>%
+        group_by(!!sym(x),.drop=F)
+
+      vec_n<-df_n %>%
+        summarise(n_unweighted= unweighted(n())) %>%
+        filter(!!sym(x)==T) %>%
+        pull(n_unweighted)}
+    if(!is.logical(df$variables[[x]])){
+      vec_n<-df %>%
+        mutate(!!x := !is.na(!!sym(x))) %>%
+        summarise(n_unweighted= unweighted(n())) %>%
+        pull(n_unweighted)
+    }
   }
-  vec_n<-df_n %>%
-    summarise(n_unweighted= unweighted(n())) %>%
-    filter(!!sym(x)==T) %>%
-      pull(n_unweighted)
+
   if(length(vec_n)==0){
     vec_n<-0
   }
@@ -60,7 +84,7 @@ survey_collapse_binary_long<- function(df,
   res<-df %>%
     summarise(
       `mean/pct`=survey_mean(!!sym(x),na.rm=TRUE,vartype="ci"),
-      ) %>%
+    ) %>%
     mutate(variable_val=x) %>%
     cbind(n_unweighted=vec_n)
 
@@ -92,11 +116,11 @@ survey_collapse_binary_long<- function(df,
                      "variable_val",
                      as.character(subset_names),
                      as.character(subset_vals))),
-                  everything())
-    # dplyr::select(any_of(
-    #   c("variable","variable_value","subset_name", "subset_value")
-    # ),
-    # everything())
+           everything())
+  # dplyr::select(any_of(
+  #   c("variable","variable_value","subset_name", "subset_value")
+  # ),
+  # everything())
 
 
 }
