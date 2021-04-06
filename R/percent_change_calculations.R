@@ -21,12 +21,11 @@ pct_change<- function(x){(x/lag(x)-1)*100}
 
 
 pct_change_by_groups_all_numerics<-function(df, group_var, time_id){
-  group_var<- enquo(group_var)
-  time_id<- enquo(time_id)
   df %>%
-    group_by(!!group_var ) %>%
-    arrange(!!group_var, !!time_id) %>%
-    summarise(across(is.numeric,pct_change)) %>%
-    filter(!is.na(!!time_id)) %>%
-    select(-!!time_id)
+    group_by(!!sym(group_var)) %>%
+    arrange(!!sym(group_var), !!sym(time_id)) %>%
+    summarise(across(where(is.numeric),pct_change)) %>%
+    filter(!is.na(!!sym(time_id))) %>%
+    select(-time_id)
 }
+
