@@ -74,6 +74,8 @@ survey_collapse_binary_long<- function(df,
         summarise(n_unweighted= unweighted(n())) %>%
         pull(n_unweighted)
     }
+    subset_names<- "dummy"
+    subset_vals<- "dummy"
   }
 
   if(length(vec_n)==0){
