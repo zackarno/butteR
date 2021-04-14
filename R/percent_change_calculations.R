@@ -21,11 +21,25 @@ pct_change<- function(x){(x/lag(x)-1)*100}
 
 
 pct_change_by_groups_all_numerics<-function(df, group_var, time_id){
-  df %>%
-    group_by(!!sym(group_var)) %>%
+
+  res<-df %>%
+    group_by(!!sym(group_var))  %>%
     arrange(!!sym(group_var), !!sym(time_id)) %>%
     summarise(across(where(is.numeric),pct_change)) %>%
-    filter(!is.na(!!sym(time_id))) %>%
-    select(-time_id)
+    ungroup() %>%
+    filter(rowAny(
+      filter(across(c(-group_var), ~!is.na(.))))
+    )
+  return(res)
 }
 
+
+#' @name rowAny
+#' @rdname rowAny
+#' @title rowAny
+#'
+#' @description helper function for new dplyr across syntax
+#' @param df data frame
+#' @export
+
+rowAny <- function(x) rowSums(x) > 0
