@@ -232,6 +232,11 @@ survey_collapse<-function(df,
     filter(sm_parent %in% vars_to_analyze)
   not_sm<-vars_to_analyze[!vars_to_analyze %in% sm_parent_child_vars$sm_parent]
   vars_to_analyze<- c(not_sm, sm_parent_child_vars$sm_child)
+
+  if(!is.null(disag)){
+    vars_to_analyze<-setdiff(vars_to_analyze,disag )
+  }
+
   res_list<-list()
   for(i in vars_to_analyze){
     print(i)
