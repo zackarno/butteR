@@ -145,4 +145,37 @@ xlsform_add_choices<- function(kobold, new_choices){
   bind_rows(choices_split)
 }
 
+#
+#
+# xlsform_add_choices<- function(kobold, new_choices){
+#   if("list_name" %in% colnames(new_choices)){
+#     # then we join directly by list_name
+#     # if not we have to make survey_name, choices_name (name in choices tab)
+#
+#   }
+#
+#   name_list_name<-survey_name_choice_name_match(kobold)
+#   lookup_table<- new_choices %>%
+#     left_join(name_list_name, by = c("name"="name"))
+#
+#
+#   lookup_table_split<- lookup_table %>%
+#     select(list_name,choice) %>%
+#     mutate(label=choice) %>%
+#     split(.$list_name)
+#   choices_split<-kobold$choices %>%
+#     split(.$list_name)
+#   choices_relevant_split<- choices_split %>%
+#     keep(names(.) %in% lookup_table$list_name)
+#
+#   choices_new_list<-list()
+#   for(i in names(choices_relevant_split)){
+#     choices_temp<-choices_relevant_split[i]
+#     lookup_temp<- lookup_table_split[i]
+#     choices_new_list[i]<-bind_rows(choices_temp,lookup_temp)
+#   }
+#   choices_split[names(choices_relevant_split)]<-choices_new_list
+#   bind_rows(choices_split)
+# }
+
 

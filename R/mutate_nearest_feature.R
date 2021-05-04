@@ -6,6 +6,7 @@
 #' @param y sf object to query against each row feature in x
 #' @return x with the distance to the closest feature from y (distance) and its index (y_index) mutated as
 #' two columns of the data set
+#' @export
 
 
 mutate_nearest_feature<- function(x, y){
